@@ -6,8 +6,7 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\JoinController;
 use App\Http\Controllers\TeacherController;
 
-Route::get('/', [RoomController::class,'index']); // list rooms
-Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
+Route::get('/', [RoomController::class,'index']);
 Route::get('/rooms/create', [RoomController::class, 'create'])->name('rooms.create');
 Route::post('/room', [RoomController::class, 'store'])->name('rooms.store');
 
