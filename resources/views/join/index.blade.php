@@ -43,29 +43,34 @@
 <script>
 const roomCode = "{{ $room->code }}";
 
-// fetch queue and render
 async function fetchQueue(){
     const res = await fetch(`/v/${roomCode}/queue`);
     const data = await res.json();
-    const entries = data.entries;
+    const entries = data.entries.filter(e => e.status !== 'done'); // hide finished
     const avg = data.room.avg_seconds || 300; // fallback 5 min
     const el = document.getElementById('queueArea');
 
+    // highlight average joining time
     let html = `<p class="mb-2 text-sm text-gray-600 dark:text-gray-400">
-                    Estimated per-student: <strong>${Math.round(avg/60)} min</strong>
+                    <strong class="text-primary">Average joining time:</strong> <strong>${Math.round(avg/60)} min</strong>
                 </p>`;
     html += '<ol class="flex flex-col gap-2">';
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const entryId = urlParams.get('entry');
 
     entries.forEach(e => {
         let statusColor = 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200';
         if(e.status === 'in_progress') statusColor = 'bg-yellow-200 dark:bg-yellow-800 text-yellow-900 dark:text-yellow-200';
-        if(e.status === 'done') statusColor = 'bg-green-200 dark:bg-green-800 text-green-900 dark:text-green-200';
+
+        // highlight your own position
+        const highlight = entryId && String(e.id) === entryId ? 'ring-2 ring-primary' : '';
 
         const disableStart = e.status !== 'waiting' ? 'disabled opacity-50 cursor-not-allowed' : '';
         const disableDone = e.status !== 'in_progress' ? 'disabled opacity-50 cursor-not-allowed' : '';
 
         html += `
-        <li class="flex justify-between items-center p-3 border rounded-md ${statusColor}">
+        <li class="flex justify-between items-center p-3 border rounded-md ${statusColor} ${highlight}">
             <div>
                 <span class="font-semibold">#${e.position ?? '-'} - ${e.name}</span>
                 <span class="ml-2 text-sm font-semibold capitalize">${e.status.replace('_',' ')}</span>
@@ -81,16 +86,14 @@ async function fetchQueue(){
     html += '</ol>';
 
     // Your position & wait time
-    const urlParams = new URLSearchParams(window.location.search);
-    const entryId = urlParams.get('entry');
     if(entryId){
         const my = entries.find(x => String(x.id) === entryId);
         if(my){
             const pos = my.position || entries.findIndex(x => x.id==entryId)+1;
             const waitSeconds = (pos - 1) * avg;
             html += `<p class="mt-3 text-gray-700 dark:text-gray-300">
-                        Your position: <strong>#${pos}</strong><br>
-                        Estimated wait: ~<strong>${Math.ceil(waitSeconds/60)} min</strong>
+                        <strong class="text-primary">Your position:</strong> <strong>#${pos}</strong><br>
+                        <strong class="text-primary">Estimated wait:</strong> ~<strong>${Math.ceil(waitSeconds/60)} min</strong>
                     </p>`;
         }
     }
