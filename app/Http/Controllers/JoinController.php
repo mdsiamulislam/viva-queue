@@ -9,9 +9,9 @@ use Carbon\Carbon;
 
 class JoinController extends Controller
 {
-    public function showJoinPage($code) {
+    public function showJoinPage($code,$isAdmin=false) {
         $room = Room::where('code', $code)->firstOrFail();
-        return view('join.index', compact('room'));
+        return view('join.index', compact('room','isAdmin'));
     }
 
     public function join(Request $r, $code) {
