@@ -8,11 +8,12 @@ use App\Http\Controllers\TeacherController;
 
 Route::get('/', [RoomController::class,'index']);
 Route::get('/rooms/create', [RoomController::class, 'create'])->name('rooms.create');
+Route::get('/room/{id}', [RoomController::class, 'delete'])->name('room.delete');
 Route::post('/room', [RoomController::class, 'store'])->name('rooms.store');
 
 // Student join page via code
-Route::get('/v/{code}', [JoinController::class,'showJoinPage']);
-Route::post('/v/{code}/join', [JoinController::class,'join']);
+Route::get('/v/{code}', [JoinController::class,'showJoinPage'])->name('join.page');
+Route::post('/v/{code}/join', [JoinController::class,'join'])->name('join.submit');
 
 // API endpoints (teacher actions & polling)
 Route::get('/v/{code}/queue', [JoinController::class,'queueJson']); // polling: queue state

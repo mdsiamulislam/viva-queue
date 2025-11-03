@@ -30,4 +30,9 @@ class RoomController extends Controller
         ]);
         return redirect('/v/'.$room->code);
     }
+
+    public function delete($id) {
+        Room::destroy($id);
+        return redirect('/');
+    }
 }
