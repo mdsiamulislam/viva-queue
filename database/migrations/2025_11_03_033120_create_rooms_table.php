@@ -12,7 +12,8 @@ return new class extends Migration
             $table->string('title');
             $table->string('code')->unique();
             $table->string('zoom_link')->nullable();
-            $table->dateTime('start_time')->nullable();
+            $table->date('start_date');
+            $table->time('start_time');
             $table->integer('expected_duration_minutes')->default(5);
             $table->integer('avg_duration_seconds')->default(0);
             $table->timestamps();

@@ -31,6 +31,20 @@
                 class="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary dark:bg-background-dark/70 dark:text-gray-200"/>
         </div>
 
+        <div class="flex flex-col sm:flex-row sm:gap-4">
+            <div class="flex flex-col sm:flex-1">
+                <label for="start_date" class="mb-1 font-medium text-gray-700 dark:text-gray-300">Start Date</label>
+                <input id="start_date" name="start_date" type="date" required
+                    class="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary dark:bg-background-dark/70 dark:text-gray-200"/>
+            </div>
+
+            <div class="flex flex-col sm:flex-1 mt-4 sm:mt-0">
+                <label for="start_time" class="mb-1 font-medium text-gray-700 dark:text-gray-300">Start Time</label>
+                <input id="start_time" name="start_time" type="time" required
+                    class="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary dark:bg-background-dark/70 dark:text-gray-200"/>
+            </div>
+        </div>
+
         <!-- Submit Button -->
         <button type="submit" 
             class="mt-4 bg-primary text-white px-4 py-2 rounded-lg font-bold hover:opacity-90 transition-opacity">

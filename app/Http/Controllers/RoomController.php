@@ -59,7 +59,8 @@ class RoomController extends Controller
             'title'=>$r->title,
             'code'=>Str::random(8),
             'zoom_link'=>$r->zoom_link,
-            'start_time'=>$r->start_time ?: null,
+            'start_time'=>$r->start_time,
+            'start_date'=>$r->start_date,
             'expected_duration_minutes'=>$r->expected_duration_minutes,
         ]);
         return redirect('/');

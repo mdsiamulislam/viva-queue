@@ -14,23 +14,56 @@ class JoinController extends Controller
         return view('join.index', compact('room','isAdmin'));
     }
 
-    public function join(Request $r, $code) {
-        $r->validate(['name'=>'required']);
-        $room = Room::where('code',$code)->firstOrFail();
 
-        // compute position = count of waiting + in_progress + queued +1
-        $pos = $room->entries()->whereIn('status',['waiting','in_progress'])->count() + 1;
+    public function join(Request $r, $code)
+{
+    $r->validate(['name' => 'required']);
+    $room = Room::where('code', $code)->firstOrFail();
 
-        $entry = QueueEntry::create([
-            'room_id'=>$room->id,
-            'name'=>$r->name,
-            'status'=>'waiting',
-            'joined_at'=>Carbon::now(),
-            'position'=>$pos,
-        ]);
+    // ✅ Block joining if scheduled start time not reached
+    if (!empty($room->start_date) && !empty($room->start_time)) {
+        try {
+            // Ensure consistent timezone (Asia/Dhaka)
+            $now = Carbon::now('Asia/Dhaka');
 
-        return redirect("/v/{$room->code}?joined=1&entry={$entry->id}");
+            // Normalize start_time (handles both '15:01' and '15:01:00')
+            $startTime = substr($room->start_time, 0, 5);
+
+            // Combine date + time into one Carbon instance
+            $startDateTime = Carbon::createFromFormat('Y-m-d H:i', $room->start_date . ' ' . $startTime, 'Asia/Dhaka');
+
+            // ✅ Allow only if current time >= start time
+            if ($now->lt($startDateTime)) {
+                return redirect()->back()
+                    ->withErrors([
+                        'name' => '⏰ You cannot join before the scheduled start time (' 
+                                   . $startDateTime->format('d M Y, h:i A') . ').'
+                    ])
+                    ->withInput();
+            }
+        } catch (\Exception $e) {
+            \Log::error('⛔ Start time parse error: ' . $e->getMessage());
+        }
     }
+
+    // ✅ Calculate queue position
+    $pos = $room->entries()
+        ->whereIn('status', ['waiting', 'in_progress'])
+        ->count() + 1;
+
+    // ✅ Create new queue entry
+    $entry = QueueEntry::create([
+        'room_id' => $room->id,
+        'name' => $r->name,
+        'status' => 'waiting',
+        'joined_at' => Carbon::now('Asia/Dhaka'),
+        'position' => $pos,
+    ]);
+
+    // ✅ Redirect to queue page
+    return redirect("/v/{$room->code}?joined=1&entry={$entry->id}");
+}
+
 
     // JSON for polling the queue
     public function queueJson($code) {
