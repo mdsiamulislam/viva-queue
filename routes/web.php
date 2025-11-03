@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\JoinController;
 use App\Http\Controllers\TeacherController;
+use Illuminate\Http\Request;
 
 // Admin room management
 Route::get('/admin', [RoomController::class, 'index'])->name('rooms.index');

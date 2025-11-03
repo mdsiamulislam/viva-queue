@@ -46,6 +46,12 @@ class RoomController extends Controller
         return view('rooms.index', ['rooms'=>$rooms, 'isAdmin'=>$isAdmin]);
     }
 
+    public function indexRedirect()
+    {
+        $rooms = Room::latest()->get();
+        return view('rooms.index', ['rooms'=>$rooms, 'isAdmin'=>true]);
+    }
+
     public function create() {
         return view('rooms.create');
     }
@@ -63,11 +69,13 @@ class RoomController extends Controller
             'start_date'=>$r->start_date,
             'expected_duration_minutes'=>$r->expected_duration_minutes,
         ]);
-        return redirect('/');
+        $rooms = Room::latest()->get();
+        return view('rooms.index', ['rooms'=>$rooms, 'isAdmin'=>true]);
     }
 
     public function delete($id) {
         Room::destroy($id);
-        return response('', 204);
+        $rooms = Room::latest()->get();
+        return view('rooms.index', ['rooms'=>$rooms, 'isAdmin'=>true]);
     }
 }

@@ -7,7 +7,7 @@
 <div class="max-w-2xl mx-auto bg-white dark:bg-background-dark/50 border border-gray-200/80 dark:border-gray-700/50 rounded-xl shadow-sm p-6 mt-10">
     <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Create Viva Room</h2>
 
-    <form method="POST" action="/room" class="flex flex-col gap-4">
+    <form method="POST" action="{{ route('rooms.store') }}" class="flex flex-col gap-4">
         @csrf
 
         <!-- Title -->
