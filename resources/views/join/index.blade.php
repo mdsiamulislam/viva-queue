@@ -83,8 +83,8 @@ async function fetchQueue(){
                 <span class="font-semibold">#${e.position ?? '-'} - ${e.name}</span>
                 <span class="ml-2 text-sm font-semibold capitalize">${e.status.replace('_',' ')}</span>
 
-                ${e.started_at ? `<div class="text-sm text-gray-600 dark:text-gray-400">Started at: ${new Date(e.started_at).toLocaleTimeString()}</div>` : ''}
-                ${e.finished_at ? `<div class="text-sm text-gray-600 dark:text-gray-400">Finished at: ${new Date(e.finished_at).toLocaleTimeString()}</div>` : ''}
+                // ${e.started_at ? `<div class="text-sm text-gray-600 dark:text-gray-400">Started at: ${new Date(e.started_at).toLocaleTimeString()}</div>` : ''}
+                // ${e.finished_at ? `<div class="text-sm text-gray-600 dark:text-gray-400">Finished at: ${new Date(e.finished_at).toLocaleTimeString()}</div>` : ''}
 
             </div>
             ${isAdmin ? `
