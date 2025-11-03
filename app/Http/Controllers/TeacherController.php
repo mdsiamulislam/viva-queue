@@ -42,7 +42,9 @@ class TeacherController extends Controller
                 }
                 return $carry;
             }, 0);
-            $avg = $done->count() ? intval($sum / $done->count()) : $room->expected_duration_minutes * 60;
+            $avg = $done->count()
+                ? max(0, intval($sum / $done->count()))
+                : max(0, intval(($room->expected_duration_minutes ?? 0) * 60));
             $room->update(['avg_duration_seconds'=>$avg]);
         }
 

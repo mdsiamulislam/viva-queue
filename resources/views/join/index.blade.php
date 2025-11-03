@@ -12,6 +12,12 @@
             Zoom Link: 
             <a href="{{ $room->zoom_link }}" target="_blank" class="text-primary underline hover:opacity-80">Join Zoom</a>
         </p>
+        <p class="text-gray-600 dark:text-gray-400">
+            Expected Duration per Student: <strong>{{ $room->expected_duration_minutes }} minutes</strong>
+        </p>
+        <p class="text-gray-600 dark:text-gray-400">
+            Start Time: <strong>{{ \Carbon\Carbon::parse($room->start_date . ' ' . $room->start_time)->format('F j, Y, g:i A') }}</strong>
+        </p>
     </div>
 
     <!-- Joined Alert -->
@@ -22,7 +28,8 @@
     @endif
 
     <!-- Join Form -->
-    <div class="bg-white dark:bg-background-dark/50 border border-gray-200/80 dark:border-gray-700/50 rounded-xl shadow-sm p-6">
+    @if(!request()->has('joined') && !$isAdmin)
+        <div class="bg-white dark:bg-background-dark/50 border border-gray-200/80 dark:border-gray-700/50 rounded-xl shadow-sm p-6">
         <form id="joinForm" method="POST" action="/v/{{ $room->code }}/join" class="flex flex-col gap-4">
             @csrf
             <input name="name" placeholder="Your name or ID" required
@@ -32,6 +39,7 @@
             </button>
         </form>
     </div>
+    @endif
 
     <!-- Queue List -->
     <div id="queueArea" class="bg-white dark:bg-background-dark/50 border border-gray-200/80 dark:border-gray-700/50 rounded-xl shadow-sm p-6 text-gray-800 dark:text-gray-200">
@@ -54,7 +62,7 @@ async function fetchQueue(){
     const el = document.getElementById('queueArea');
 
     let html = `<p class="mb-2 text-sm text-gray-600 dark:text-gray-400">
-                    Estimated per-student: <strong>${Math.round(avg/60)} min</strong>
+                    Estimated per-student: <strong>${avg/60} min</strong>
                 </p>`;
     html += '<ol class="flex flex-col gap-2">';
 
@@ -74,6 +82,10 @@ async function fetchQueue(){
             <div>
                 <span class="font-semibold">#${e.position ?? '-'} - ${e.name}</span>
                 <span class="ml-2 text-sm font-semibold capitalize">${e.status.replace('_',' ')}</span>
+
+                ${e.started_at ? `<div class="text-sm text-gray-600 dark:text-gray-400">Started at: ${new Date(e.started_at).toLocaleTimeString()}</div>` : ''}
+                ${e.finished_at ? `<div class="text-sm text-gray-600 dark:text-gray-400">Finished at: ${new Date(e.finished_at).toLocaleTimeString()}</div>` : ''}
+
             </div>
             ${isAdmin ? `
             <div class="flex gap-2">

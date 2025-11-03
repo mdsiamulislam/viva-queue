@@ -56,7 +56,7 @@ class JoinController extends Controller
         'room_id' => $room->id,
         'name' => $r->name,
         'status' => 'waiting',
-        'joined_at' => Carbon::now('Asia/Dhaka'),
+        'joined_at' => Carbon::now(),
         'position' => $pos,
     ]);
 
