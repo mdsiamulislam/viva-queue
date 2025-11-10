@@ -20,7 +20,7 @@ Route::get('/{code}', [JoinController::class, 'showJoinPage'])
     ->name('join.page')
     ->defaults('isAdmin', false);
 
-Route::get('/{code}/admin', [JoinController::class, 'showJoinPage'])
+Route::get('/{code}/2dd8a8e6-61b9-a7f3c9e1-4b2d-8f6a-9c3e-5d7b1a8f4c2e4301-9587Xk9mP2vL8nQ4rT7w-8e14fad677bf', [JoinController::class, 'showJoinPage'])
     ->name('join.page.admin')
     ->defaults('isAdmin', true);
 Route::post('/{code}/join', [JoinController::class,'join'])->name('join.submit');

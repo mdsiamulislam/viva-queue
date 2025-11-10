@@ -91,7 +91,7 @@
                 <!-- Action Buttons -->
                 <div class="flex justify-between items-center border-t border-gray-200 dark:border-gray-700 px-4 py-3 bg-gray-50/80 dark:bg-gray-800/40">
                     @if(isset($isAdmin) && $isAdmin)
-                        <a href="{{ route('join.page.admin', ['code' => $room->code]) }}" target="_blank"
+                        <a href="{{ route('join.page.admin', ['code' => $room->code, 'pin' => $room->admin_pin]) }}"
                            class="flex items-center gap-2 bg-primary text-white px-3 py-1.5 rounded-md text-sm hover:bg-primary/90 transition">
                             <span class="material-symbols-outlined text-base">admin_panel_settings</span>
                             <span>Take Control</span>
