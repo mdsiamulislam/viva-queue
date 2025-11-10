@@ -16,17 +16,17 @@ Route::get('/room/{id}', [RoomController::class, 'delete'])->name('room.delete')
 Route::post('/room', [RoomController::class, 'store'])->name('rooms.store');
 
 // Student join page via code
-Route::get('/v/{code}', [JoinController::class, 'showJoinPage'])
+Route::get('/{code}', [JoinController::class, 'showJoinPage'])
     ->name('join.page')
     ->defaults('isAdmin', false);
 
-Route::get('/v/{code}/admin', [JoinController::class, 'showJoinPage'])
+Route::get('/{code}/admin', [JoinController::class, 'showJoinPage'])
     ->name('join.page.admin')
     ->defaults('isAdmin', true);
-Route::post('/v/{code}/join', [JoinController::class,'join'])->name('join.submit');
+Route::post('/{code}/join', [JoinController::class,'join'])->name('join.submit');
 
 // API endpoints (teacher actions & polling)
-Route::get('/v/{code}/queue', [JoinController::class,'queueJson']); // polling: queue state
-Route::post('/v/{code}/entry/{id}/start', [TeacherController::class,'startEntry']);
-Route::post('/v/{code}/entry/{id}/done', [TeacherController::class,'finishEntry']);
-Route::post('/v/{code}/entry/{id}/remove', [TeacherController::class,'removeEntry']);
+Route::get('/{code}/queue', [JoinController::class,'queueJson']); // polling: queue state
+Route::post('/{code}/entry/{id}/start', [TeacherController::class,'startEntry']);
+Route::post('/{code}/entry/{id}/done', [TeacherController::class,'finishEntry']);
+Route::post('/{code}/entry/{id}/remove', [TeacherController::class,'removeEntry']);

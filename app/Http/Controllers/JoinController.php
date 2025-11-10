@@ -61,7 +61,7 @@ class JoinController extends Controller
     ]);
 
     // ✅ Redirect to queue page
-    return redirect("/v/{$room->code}?joined=1&entry={$entry->id}");
+    return redirect("/{$room->code}?joined=1&entry={$entry->id}");
 }
 
 

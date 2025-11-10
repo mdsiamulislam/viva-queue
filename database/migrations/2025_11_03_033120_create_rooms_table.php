@@ -16,7 +16,7 @@ return new class extends Migration
             $table->time('start_time');
             $table->integer('expected_duration_minutes')->default(5);
             $table->integer('avg_duration_seconds')->default(0);
-            $table->timestamps();
+            $table->timestamps(); // created_at and updated_at handled by Eloquent
         });
     }
 
