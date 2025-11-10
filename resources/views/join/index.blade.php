@@ -17,6 +17,12 @@
                 Copy
             </button>
             </p>
+            <p class="text-gray-600 dark:text-gray-400">
+            Zoom Link:
+            <a href="{{ $room->zoom_link }}" target="_blank" class="font-semibold text-primary underline ml-2 hover:opacity-80">
+                {{ \Illuminate\Support\Str::limit($room->zoom_link, 50) }}
+            </a>
+            </p>
         </div>
         <p class="text-gray-600 dark:text-gray-400">
             Expected Duration per Student: <strong>{{ $room->expected_duration_minutes }} minutes</strong>

@@ -7,6 +7,8 @@ use App\Models\Room;
 use App\Models\QueueEntry;
 use Carbon\Carbon;
 
+
+
 class JoinController extends Controller
 {
     public function showJoinPage($code,$isAdmin=false) {
