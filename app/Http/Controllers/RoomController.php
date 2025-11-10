@@ -11,6 +11,7 @@ class RoomController extends Controller
         $rooms = Room::latest()->get();
         $isAdmin = $request->route() && $request->route()->getName() === 'rooms.index';
 
+        
         // if admin take a password
         if ($isAdmin) {
             $password = $request->query('password');

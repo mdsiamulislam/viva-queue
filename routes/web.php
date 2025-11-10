@@ -8,9 +8,9 @@ use App\Http\Controllers\TeacherController;
 use Illuminate\Http\Request;
 
 // Admin room management
-Route::get('/admin', [RoomController::class, 'index'])->name('rooms.index');
+Route::get('/', [RoomController::class, 'index'])->name('rooms.index');
 
-Route::get('/', [RoomController::class,'index']);
+// Route::get('/', [RoomController::class,'index']);
 Route::get('/rooms/create', [RoomController::class, 'create'])->name('rooms.create');
 Route::get('/room/{id}', [RoomController::class, 'delete'])->name('room.delete');
 Route::post('/room', [RoomController::class, 'store'])->name('rooms.store');
