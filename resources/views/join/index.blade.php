@@ -8,40 +8,16 @@
     <!-- Room Info -->
     <div class="bg-white dark:bg-background-dark/50 border border-gray-200/80 dark:border-gray-700/50 rounded-xl shadow-sm p-6">
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ $room->title }}</h2>
-        <p class="text-gray-600 dark:text-gray-400 mt-2">
-            Room Code:
-            <span class="inline-flex items-center">
-            <input id="roomCodeInput" readonly value="{{ $room->code }}"
-                   class="ml-2 px-2 py-1 border border-gray-300 rounded-md bg-gray-50 dark:bg-gray-800 text-sm dark:text-gray-200"/>
-            <button id="copyBtn" type="button" onclick="copyRoomCode()"
-                class="ml-2 bg-primary text-white px-3 py-1 rounded-md text-sm">
+        <div class="mt-2 space-y-2">
+            <p class="text-gray-600 dark:text-gray-400">
+            Join Code:
+            <span class="font-semibold text-gray-900 dark:text-white ml-2">{{ url($room->code) }}</span>
+            <button type="button" onclick="navigator.clipboard.writeText('{{ url($room->code) }}')" 
+                class="ml-3 bg-gray-200 dark:bg-gray-700 text-sm px-2 py-1 rounded-md hover:opacity-90">
                 Copy
             </button>
-            </span>
-        </p>
-        <script>
-        function copyRoomCode(){
-            const code = document.getElementById('roomCodeInput').value;
-            if (!navigator.clipboard) {
-            // fallback
-            const tmp = document.createElement('textarea');
-            tmp.value = code;
-            document.body.appendChild(tmp);
-            tmp.select();
-            try { document.execCommand('copy'); } catch (e) { alert('Copy failed'); }
-            document.body.removeChild(tmp);
-            return;
-            }
-            navigator.clipboard.writeText(code)
-            .then(() => {
-                const btn = document.getElementById('copyBtn');
-                const prev = btn.innerText;
-                btn.innerText = 'Copied';
-                setTimeout(() => btn.innerText = prev, 2000);
-            })
-            .catch(() => alert('Unable to copy'));
-        }
-        </script>
+            </p>
+        </div>
         <p class="text-gray-600 dark:text-gray-400">
             Expected Duration per Student: <strong>{{ $room->expected_duration_minutes }} minutes</strong>
         </p>
@@ -84,6 +60,7 @@
 <script>
 const roomCode = "{{ $room->code }}";
 const isAdmin = {{ $isAdmin ? 'true' : 'false' }};
+const defaultDurationSeconds = {{ $room->expected_duration_minutes * 60 }};
 
 function calculateElapsedTime(startedAt) {
     if (!startedAt) return 0;
@@ -106,14 +83,46 @@ function formatWaitTime(seconds) {
     return `${mins} minutes`;
 }
 
+// Calculate dynamic average from completed entries
+function calculateDynamicAverage(allEntries) {
+    // Get all completed entries with both started_at and finished_at
+    const completed = allEntries.filter(e => 
+        e.status === 'done' && 
+        e.started_at && 
+        e.finished_at
+    );
+    
+    if (completed.length === 0) {
+        // No completed entries yet, use default
+        return defaultDurationSeconds;
+    }
+    
+    // Calculate actual duration for each completed entry
+    const durations = completed.map(e => {
+        const start = new Date(e.started_at);
+        const end = new Date(e.finished_at);
+        return (end - start) / 1000; // in seconds
+    });
+    
+    // Calculate average
+    const sum = durations.reduce((acc, val) => acc + val, 0);
+    const average = sum / durations.length;
+    
+    // Return average, but ensure it's at least 30 seconds
+    return Math.max(30, Math.round(average));
+}
+
 async function fetchQueue(){
     const res = await fetch(`/${roomCode}/queue`);
     const data = await res.json();
 
-    const entries = data.entries.filter(e => e.status !== 'done');
-    const avgSeconds = data.room.avg_seconds || {{ $room->expected_duration_minutes * 60 }};
+    const allEntries = data.entries; // All entries including 'done'
+    const entries = allEntries.filter(e => e.status !== 'done');
+    
+    // Calculate dynamic average from completed entries
+    const avgSeconds = calculateDynamicAverage(allEntries);
+    
     const el = document.getElementById('queueArea');
-
     const urlParams = new URLSearchParams(window.location.search);
     const entryId = urlParams.get('entry');
 
@@ -153,44 +162,122 @@ async function fetchQueue(){
 
             const isActive = active && active.id == me.id;
             const cardColor = isActive 
-                ? 'bg-gradient-to-r from-yellow-400 to-orange-400 dark:from-yellow-600 dark:to-orange-600' 
-                : 'bg-gradient-to-r from-blue-500 to-purple-600';
+                ? 'bg-gradient-to-br from-yellow-400 via-orange-400 to-red-400 dark:from-yellow-600 dark:via-orange-600 dark:to-red-600' 
+                : 'bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-600';
+
+            // Calculate progress percentage
+            const totalWaitingAhead = entries.filter((e, idx) => idx < myIndex && e.status !== 'done').length;
+            const totalInQueue = entries.length;
+            const progressPercent = totalInQueue > 1 ? ((totalInQueue - pos) / (totalInQueue - 1)) * 100 : 100;
+            
+            // Circular countdown values
+            const waitMinutes = Math.ceil(waitSeconds / 60);
+            const circumference = 2 * Math.PI * 54; // radius = 54
+            const strokeOffset = isActive ? 0 : circumference - (progressPercent / 100) * circumference;
+
+            // Check if using dynamic or default average
+            const completedCount = allEntries.filter(e => e.status === 'done' && e.started_at && e.finished_at).length;
+            const avgSource = completedCount > 0 ? 'live avg' : 'expected';
 
             html += `
-            <div class="mb-6 ${cardColor} text-white rounded-lg shadow-lg p-5">
-                <div class="flex items-center justify-between mb-3">
-                    <div>
-                        <p class="text-sm font-medium opacity-90">Your Position</p>
-                        <p class="text-4xl font-bold">#${pos}</p>
-                    </div>
-                    ${isActive ? `
-                        <div class="text-right">
-                            <p class="text-sm font-medium opacity-90">Status</p>
-                            <p class="text-xl font-bold">🎯 NOW SERVING</p>
-                        </div>
-                    ` : `
-                        <div class="text-right">
-                            <p class="text-sm font-medium opacity-90">Estimated Wait</p>
-                            <p class="text-3xl font-bold">~${formatWaitTime(waitSeconds)}</p>
-                        </div>
-                    `}
+            <div class="mb-6 ${cardColor} text-white rounded-2xl shadow-2xl p-6 relative overflow-hidden">
+                <!-- Animated background pattern -->
+                <div class="absolute inset-0 opacity-10">
+                    <div class="absolute top-0 left-0 w-40 h-40 bg-white rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+                    <div class="absolute bottom-0 right-0 w-32 h-32 bg-white rounded-full translate-x-1/2 translate-y-1/2"></div>
                 </div>
-                ${isActive ? `
-                    <div class="mt-3 pt-3 border-t border-white/30">
-                        <p class="text-sm font-medium">⏱️ You're being served now! Please join the Zoom call.</p>
+                
+                <div class="relative flex items-center justify-between gap-6">
+                    <!-- Left: Position Info -->
+                    <div class="flex-1">
+                        <p class="text-sm font-medium opacity-90 mb-1">Your Position in Queue</p>
+                        <div class="flex items-baseline gap-2 mb-3">
+                            <span class="text-5xl font-bold">#${pos}</span>
+                            <span class="text-lg opacity-75">of ${totalInQueue}</span>
+                        </div>
+                        ${isActive ? `
+                            <div class="flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2 animate-pulse">
+                                <span class="text-2xl">🎯</span>
+                                <div>
+                                    <p class="text-sm font-semibold">NOW SERVING</p>
+                                    <p class="text-xs opacity-90">Please join the Zoom call</p>
+                                </div>
+                            </div>
+                        ` : totalWaitingAhead > 0 ? `
+                            <div class="space-y-1.5 bg-white/10 backdrop-blur-sm rounded-lg px-3 py-2">
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="opacity-90">People ahead:</span>
+                                    <span class="font-bold">${totalWaitingAhead}</span>
+                                </div>
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="opacity-90">Avg time (${avgSource}):</span>
+                                    <span class="font-bold">${Math.ceil(avgSeconds/60)} min</span>
+                                </div>
+                                ${completedCount > 0 ? `
+                                    <div class="text-xs opacity-75 pt-1 border-t border-white/20">
+                                        Based on ${completedCount} completed
+                                    </div>
+                                ` : ''}
+                            </div>
+                        ` : `
+                            <div class="flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2">
+                                <span class="text-2xl">🎉</span>
+                                <div>
+                                    <p class="text-sm font-semibold">You're Next!</p>
+                                    <p class="text-xs opacity-90">Get ready</p>
+                                </div>
+                            </div>
+                        `}
                     </div>
-                ` : waitSeconds > 0 ? `
-                    <div class="mt-3 pt-3 border-t border-white/30">
-                        <div class="flex items-center justify-between text-sm">
-                            <span>${entries.filter((e, idx) => idx < myIndex && e.status !== 'done').length} people ahead</span>
-                            <span>Avg: ${Math.ceil(avgSeconds/60)} min/person</span>
+                    
+                    <!-- Right: Circular Timer -->
+                    <div class="flex-shrink-0">
+                        <div class="relative w-36 h-36">
+                            <!-- SVG Circle Progress -->
+                            <svg class="transform -rotate-90 w-full h-full">
+                                <!-- Background circle -->
+                                <circle cx="72" cy="72" r="54" 
+                                        stroke="currentColor" 
+                                        stroke-width="8" 
+                                        fill="none" 
+                                        class="text-white/20" />
+                                <!-- Progress circle -->
+                                <circle cx="72" cy="72" r="54" 
+                                        stroke="currentColor" 
+                                        stroke-width="8" 
+                                        fill="none" 
+                                        stroke-linecap="round"
+                                        class="text-white transition-all duration-1000 ease-out ${isActive ? 'animate-pulse' : ''}"
+                                        style="stroke-dasharray: ${circumference}; stroke-dashoffset: ${strokeOffset};" />
+                            </svg>
+                            
+                            <!-- Center content -->
+                            <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                ${isActive ? `
+                                    <div class="text-center animate-bounce">
+                                        <div class="text-3xl mb-1">⏱️</div>
+                                        <div class="text-xs font-semibold">ACTIVE</div>
+                                    </div>
+                                ` : `
+                                    <div class="text-center">
+                                        <div class="text-4xl font-bold leading-none">${waitMinutes}</div>
+                                        <div class="text-xs font-semibold mt-1 opacity-90">
+                                            ${waitMinutes === 1 ? 'MIN' : 'MINS'}
+                                        </div>
+                                        <div class="text-xs opacity-75 mt-0.5">wait</div>
+                                    </div>
+                                `}
+                            </div>
+                        </div>
+                        
+                        <!-- Progress label -->
+                        <div class="text-center mt-2">
+                            <div class="text-xs font-medium opacity-75">
+                                ${isActive ? 'Being Served' : `${Math.round(progressPercent)}% done`}
+                            </div>
                         </div>
                     </div>
-                ` : `
-                    <div class="mt-3 pt-3 border-t border-white/30">
-                        <p class="text-sm font-medium">🎉 You're next! Get ready.</p>
-                    </div>
-                `}
+                </div>
             </div>`;
         }
     }
@@ -199,20 +286,49 @@ async function fetchQueue(){
     if (isAdmin) {
         const waitingCount = entries.filter(e => e.status === 'waiting').length;
         const totalWaitTime = waitingCount * Math.ceil(avgSeconds / 60);
+        const completedToday = allEntries.filter(e => e.status === 'done').length;
+        const completedCount = allEntries.filter(e => e.status === 'done' && e.started_at && e.finished_at).length;
         
         html += `
-        <div class="mb-4 grid grid-cols-3 gap-3">
+        <div class="mb-4 grid grid-cols-4 gap-3">
             <div class="bg-blue-50 dark:bg-blue-900/30 p-3 rounded-lg text-center">
                 <p class="text-2xl font-bold text-blue-600 dark:text-blue-400">${entries.length}</p>
-                <p class="text-xs text-gray-600 dark:text-gray-400">Total in Queue</p>
+                <p class="text-xs text-gray-600 dark:text-gray-400">In Queue</p>
             </div>
             <div class="bg-yellow-50 dark:bg-yellow-900/30 p-3 rounded-lg text-center">
                 <p class="text-2xl font-bold text-yellow-600 dark:text-yellow-400">${active ? 1 : 0}</p>
-                <p class="text-xs text-gray-600 dark:text-gray-400">Being Served</p>
+                <p class="text-xs text-gray-600 dark:text-gray-400">Serving</p>
             </div>
             <div class="bg-green-50 dark:bg-green-900/30 p-3 rounded-lg text-center">
-                <p class="text-2xl font-bold text-green-600 dark:text-green-400">~${totalWaitTime}</p>
-                <p class="text-xs text-gray-600 dark:text-gray-400">Min Remaining</p>
+                <p class="text-2xl font-bold text-green-600 dark:text-green-400">${completedToday}</p>
+                <p class="text-xs text-gray-600 dark:text-gray-400">Completed</p>
+            </div>
+            <div class="bg-purple-50 dark:bg-purple-900/30 p-3 rounded-lg text-center">
+                <p class="text-2xl font-bold text-purple-600 dark:text-purple-400">~${totalWaitTime}</p>
+                <p class="text-xs text-gray-600 dark:text-gray-400">Min Left</p>
+            </div>
+        </div>
+        
+        <!-- Average Time Info -->
+        <div class="mb-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3 border border-gray-200 dark:border-gray-700">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        ${completedCount > 0 ? '📊 Live Avg Time:' : '⏱️ Expected Avg Time:'}
+                    </span>
+                    <span class="text-lg font-bold text-primary">
+                        ${Math.ceil(avgSeconds / 60)} min
+                    </span>
+                </div>
+                ${completedCount > 0 ? `
+                    <span class="text-xs text-gray-500 dark:text-gray-400">
+                        From ${completedCount} completed student${completedCount > 1 ? 's' : ''}
+                    </span>
+                ` : `
+                    <span class="text-xs text-gray-500 dark:text-gray-400">
+                        No completions yet
+                    </span>
+                `}
             </div>
         </div>`;
     }
