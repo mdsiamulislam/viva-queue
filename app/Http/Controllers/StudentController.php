@@ -7,12 +7,13 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\StudentsImport;
 use App\Exports\StudentsExport;
+use Illuminate\Support\Facades\DB;
 
 class StudentController extends Controller
 {
     public function index()
     {
-        $students = Student::latest()->paginate(20);
+        $students = Student::orderBy(DB::raw('CAST(roll AS UNSIGNED)'), 'asc')->paginate(20);
         return view('students.index', compact('students'));
     }
 
