@@ -72,12 +72,12 @@
                     <!-- Stats -->
                     <div class="flex gap-4">
                         <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center">
-                            <div class="text-3xl font-bold">{{ $students->total() }}</div>
+                            <div class="text-3xl font-bold" id="total-count">0</div>
                             <div class="text-sm opacity-90">Total Students</div>
                         </div>
                         <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center">
-                            <div class="text-3xl font-bold">{{ $students->count() }}</div>
-                            <div class="text-sm opacity-90">This Page</div>
+                            <div class="text-3xl font-bold" id="filtered-count">0</div>
+                            <div class="text-sm opacity-90">Filtered Results</div>
                         </div>
                     </div>
                 </div>
@@ -88,51 +88,42 @@
         <div class="glass-effect rounded-xl shadow-lg p-6 mb-6 animate-slide-in">
             <div class="flex flex-col lg:flex-row gap-4 items-center justify-between">
                 <!-- Search -->
-                <form method="GET" class="flex-1 w-full lg:w-auto">
+                <div class="flex-1 w-full lg:w-auto">
                     <div class="relative">
                         <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" name="search" value="{{ request('search') }}"
+                        <input type="text" id="search-input"
                             placeholder="Search by name, roll, phone..."
                             class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:outline-none transition">
                     </div>
-                </form>
+                </div>
 
                 <!-- Filters -->
                 <div class="flex flex-wrap gap-3">
-                    <select name="class" onchange="this.form.submit()"
+                    <select id="class-filter"
                         class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:outline-none transition">
                         <option value="">All Classes</option>
-                        <option value="1">Class 1</option>
-                        <option value="2">Class 2</option>
-                        <option value="3">Class 3</option>
-                        <option value="4">Class 4</option>
-                        <option value="5">Class 5</option>
                     </select>
 
-                    <select name="section" onchange="this.form.submit()"
+                    <select id="section-filter"
                         class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:outline-none transition">
                         <option value="">All Sections</option>
-                        <option value="A">Section A</option>
-                        <option value="B">Section B</option>
-                        <option value="C">Section C</option>
                     </select>
 
-                    <button type="submit" class="bg-indigo-600 text-white px-6 py-3 rounded-xl hover:bg-indigo-700 transition shadow-lg">
-                        <i class="fas fa-filter mr-2"></i>Apply Filters
+                    <button onclick="clearFilters()" class="bg-gray-600 text-white px-6 py-3 rounded-xl hover:bg-gray-700 transition shadow-lg">
+                        <i class="fas fa-redo mr-2"></i>Clear Filters
                     </button>
                 </div>
 
                 <!-- Upload & Export -->
                 <div class="flex gap-3">
-                    <label for="file-upload" class="cursor-pointer bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition shadow-lg flex items-center gap-2">
-                        <i class="fas fa-upload"></i>
-                        <span>Import</span>
+                    <form action="{{ route('students.import') }}" method="POST" enctype="multipart/form-data" id="import-form">
+                        @csrf
+                        <label for="file-upload" class="cursor-pointer bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition shadow-lg flex items-center gap-2">
+                            <i class="fas fa-upload"></i>
+                            <span>Import</span>
+                        </label>
                         <input id="file-upload" type="file" name="file" class="hidden"
                             onchange="document.getElementById('import-form').submit()">
-                    </label>
-
-                    <form id="import-form" action="{{ route('students.import') }}" method="POST" enctype="multipart/form-data" class="hidden">
-                        @csrf
                     </form>
 
                     <a href="{{ route('students.export') }}"
@@ -192,60 +183,8 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-100">
-                        @forelse($students as $s)
-                        <tr class="table-row-hover">
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white font-bold">
-                                        {{ substr($s->name, 0, 1) }}
-                                    </div>
-                                    <span class="font-medium text-gray-900">{{ $s->name }}</span>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
-                                    {{ $s->roll }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">
-                                    Class {{ $s->class }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-                                    {{ $s->section }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-gray-700">
-                                <i class="fas fa-phone-alt text-indigo-500 mr-2"></i>{{ $s->phone }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex gap-2">
-                                    <button class="text-blue-600 hover:text-blue-800 transition">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="text-green-600 hover:text-green-800 transition">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="text-red-600 hover:text-red-800 transition">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="6" class="px-6 py-12 text-center">
-                                <div class="flex flex-col items-center gap-3">
-                                    <i class="fas fa-inbox text-6xl text-gray-300"></i>
-                                    <p class="text-gray-500 text-lg">No students found.</p>
-                                    <p class="text-gray-400 text-sm">Try adjusting your search or filters</p>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforelse
+                    <tbody id="table-body" class="bg-white divide-y divide-gray-100">
+                        <!-- Will be populated by JavaScript -->
                     </tbody>
                 </table>
             </div>
@@ -253,31 +192,187 @@
 
         <!-- Grid View -->
         <div id="grid-view" class="hidden">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                @forelse($students as $s)
-                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+            <div id="grid-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- No Results Message -->
+        <div id="no-results" class="hidden glass-effect rounded-xl shadow-2xl p-12 text-center">
+            <i class="fas fa-inbox text-6xl text-gray-300 mb-3"></i>
+            <p class="text-gray-500 text-lg">No students found.</p>
+            <p class="text-gray-400 text-sm">Try adjusting your search or filters</p>
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-8" id="pagination-container">
+            <!-- Pagination will be here if needed -->
+        </div>
+    </div>
+
+    <script>
+        // Store all students data
+        let allStudents = @json($students->items());
+        let filteredStudents = [...allStudents];
+
+        // Extract unique classes and sections
+        function initializeFilters() {
+            const classes = [...new Set(allStudents.map(s => s.class))].sort();
+            const sections = [...new Set(allStudents.map(s => s.section))].sort();
+
+            const classFilter = document.getElementById('class-filter');
+            const sectionFilter = document.getElementById('section-filter');
+
+            classes.forEach(c => {
+                const option = document.createElement('option');
+                option.value = c;
+                option.textContent = `Class ${c}`;
+                classFilter.appendChild(option);
+            });
+
+            sections.forEach(s => {
+                const option = document.createElement('option');
+                option.value = s;
+                option.textContent = `Section ${s}`;
+                sectionFilter.appendChild(option);
+            });
+        }
+
+        // Filter students
+        function filterStudents() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const selectedClass = document.getElementById('class-filter').value;
+            const selectedSection = document.getElementById('section-filter').value;
+
+            filteredStudents = allStudents.filter(student => {
+                const matchesSearch =
+                    student.name.toLowerCase().includes(searchTerm) ||
+                    student.roll.toString().toLowerCase().includes(searchTerm) ||
+                    student.phone.toString().toLowerCase().includes(searchTerm);
+
+                const matchesClass = !selectedClass || student.class.toString() === selectedClass;
+                const matchesSection = !selectedSection || student.section === selectedSection;
+
+                return matchesSearch && matchesClass && matchesSection;
+            });
+
+            updateDisplay();
+        }
+
+        // Update the display
+        function updateDisplay() {
+            updateStats();
+            renderTableView();
+            renderGridView();
+
+            const noResults = document.getElementById('no-results');
+            const tableView = document.getElementById('table-view');
+            const gridView = document.getElementById('grid-view');
+
+            if (filteredStudents.length === 0) {
+                noResults.classList.remove('hidden');
+                tableView.classList.add('hidden');
+                gridView.classList.add('hidden');
+            } else {
+                noResults.classList.add('hidden');
+                if (tableView.classList.contains('hidden')) {
+                    gridView.classList.remove('hidden');
+                } else {
+                    tableView.classList.remove('hidden');
+                }
+            }
+        }
+
+        // Update statistics
+        function updateStats() {
+            document.getElementById('total-count').textContent = allStudents.length;
+            document.getElementById('filtered-count').textContent = filteredStudents.length;
+        }
+
+        // Render table view
+        function renderTableView() {
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = '';
+
+            filteredStudents.forEach(student => {
+                const row = document.createElement('tr');
+                row.className = 'table-row-hover';
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white font-bold">
+                                ${student.name.charAt(0).toUpperCase()}
+                            </div>
+                            <span class="font-medium text-gray-900">${student.name}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                            ${student.roll}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">
+                            Class ${student.class}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+                            ${student.section}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-gray-700">
+                        <i class="fas fa-phone-alt text-indigo-500 mr-2"></i>${student.phone}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex gap-2">
+                            <button class="text-blue-600 hover:text-blue-800 transition">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="text-green-600 hover:text-green-800 transition">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="text-red-600 hover:text-red-800 transition">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Render grid view
+        function renderGridView() {
+            const gridContainer = document.getElementById('grid-container');
+            gridContainer.innerHTML = '';
+
+            filteredStudents.forEach(student => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-xl shadow-lg p-6 card-hover';
+                card.innerHTML = `
                     <div class="flex flex-col items-center text-center">
                         <div class="w-20 h-20 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white text-3xl font-bold mb-4">
-                            {{ substr($s->name, 0, 1) }}
+                            ${student.name.charAt(0).toUpperCase()}
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $s->name }}</h3>
-
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">${student.name}</h3>
+                        
                         <div class="w-full space-y-3 mt-4">
                             <div class="flex items-center justify-between bg-gray-50 rounded-lg p-3">
                                 <span class="text-gray-600 text-sm">Roll:</span>
-                                <span class="font-semibold text-indigo-600">{{ $s->roll }}</span>
+                                <span class="font-semibold text-indigo-600">${student.roll}</span>
                             </div>
                             <div class="flex items-center justify-between bg-gray-50 rounded-lg p-3">
                                 <span class="text-gray-600 text-sm">Class:</span>
-                                <span class="font-semibold">{{ $s->class }}</span>
+                                <span class="font-semibold">${student.class}</span>
                             </div>
                             <div class="flex items-center justify-between bg-gray-50 rounded-lg p-3">
                                 <span class="text-gray-600 text-sm">Section:</span>
-                                <span class="font-semibold">{{ $s->section }}</span>
+                                <span class="font-semibold">${student.section}</span>
                             </div>
                             <div class="flex items-center justify-between bg-gray-50 rounded-lg p-3">
                                 <span class="text-gray-600 text-sm">Phone:</span>
-                                <span class="font-semibold text-gray-700">{{ $s->phone }}</span>
+                                <span class="font-semibold text-gray-700">${student.phone}</span>
                             </div>
                         </div>
 
@@ -293,23 +388,12 @@
                             </button>
                         </div>
                     </div>
-                </div>
-                @empty
-                <div class="col-span-full text-center py-12">
-                    <i class="fas fa-inbox text-6xl text-gray-300 mb-3"></i>
-                    <p class="text-gray-500 text-lg">No students found.</p>
-                </div>
-                @endforelse
-            </div>
-        </div>
+                `;
+                gridContainer.appendChild(card);
+            });
+        }
 
-        <!-- Pagination -->
-        <div class="mt-8">
-            {{ $students->links('pagination::tailwind') }}
-        </div>
-    </div>
-
-    <script>
+        // Toggle view
         function toggleView(view) {
             const tableView = document.getElementById('table-view');
             const gridView = document.getElementById('grid-view');
@@ -332,6 +416,25 @@
                 tableBtn.classList.add('bg-gray-200', 'text-gray-700');
             }
         }
+
+        // Clear all filters
+        function clearFilters() {
+            document.getElementById('search-input').value = '';
+            document.getElementById('class-filter').value = '';
+            document.getElementById('section-filter').value = '';
+            filterStudents();
+        }
+
+        // Event listeners
+        document.getElementById('search-input').addEventListener('input', filterStudents);
+        document.getElementById('class-filter').addEventListener('change', filterStudents);
+        document.getElementById('section-filter').addEventListener('change', filterStudents);
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeFilters();
+            updateDisplay();
+        });
     </script>
 
 </body>
