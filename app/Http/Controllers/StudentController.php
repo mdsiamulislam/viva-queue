@@ -31,4 +31,10 @@ class StudentController extends Controller
     {
         return Excel::download(new StudentsExport, 'students.xlsx');
     }
+
+    public function deleteAll()
+    {
+        Student::truncate();
+        return back()->with('success', 'All student records have been deleted.');
+    }
 }

@@ -11,6 +11,7 @@ use App\Http\Controllers\TeacherController;
 Route::get('/students', [StudentController::class, 'index'])->name('students.index');
 Route::post('/students/import', [StudentController::class, 'import'])->name('students.import');
 Route::get('/students/export', [StudentController::class, 'export'])->name('students.export');
+Route::get('/students/delete-all', [StudentController::class, 'deleteAll'])->name('students.deleteAll');
 
 // --------------------
 // ✅ Admin room management
