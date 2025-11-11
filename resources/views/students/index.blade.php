@@ -100,7 +100,6 @@
     <script>
         let allStudents = @json($students->items());
 
-
         const searchInput = document.getElementById('search-input');
         const classFilter = document.getElementById('class-filter');
         const sectionFilter = document.getElementById('section-filter');
