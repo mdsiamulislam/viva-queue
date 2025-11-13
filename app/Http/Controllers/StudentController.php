@@ -13,9 +13,33 @@ class StudentController extends Controller
 {
     public function index()
     {
+        // Fetch all students ordered by roll (numeric order)
         $students = Student::orderBy(DB::raw('CAST(roll AS UNSIGNED)'), 'asc')->paginate(20);
-        return view('students.index', compact('students'));
+
+        // Total students
+        $totalStudents = Student::count();
+
+        // Unique students (based on unique email or phone number)
+        $uniqueStudents = Student::select('email', 'mobile_number')
+            ->whereNotNull('email')
+            ->orWhereNotNull('mobile_number')
+            ->distinct()
+            ->count();
+
+        // Students grouped by course (admission_for)
+        $studentsByCourse = Student::select('admission_for', DB::raw('COUNT(*) as total'))
+            ->groupBy('admission_for')
+            ->pluck('total', 'admission_for')
+            ->toArray();
+
+        return view('students.index', compact(
+            'students',
+            'totalStudents',
+            'uniqueStudents',
+            'studentsByCourse'
+        ));
     }
+
 
     public function import(Request $request)
     {
