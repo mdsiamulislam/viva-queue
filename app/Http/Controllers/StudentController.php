@@ -11,34 +11,38 @@ use Illuminate\Support\Facades\DB;
 
 class StudentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Fetch all students ordered by roll (numeric order)
-        $students = Student::orderBy(DB::raw('CAST(roll AS UNSIGNED)'), 'asc')->paginate(20);
+        $query = Student::query();
 
-        // Total students
+        // Multi-filter support for dropdowns
+        $filters = ['class', 'section', 'admission_for', 'gender', 'present_division'];
+        foreach ($filters as $filter) {
+            if ($request->filled($filter)) {
+                $query->where($filter, $request->$filter);
+            }
+        }
+
+        // Fetch paginated students
+        $students = $query->orderBy(DB::raw('CAST(roll AS UNSIGNED)'), 'asc')->paginate(25)->withQueryString();
+
+        // Prepare statistics
         $totalStudents = Student::count();
-
-        // Unique students (based on unique email or phone number)
-        $uniqueStudents = Student::select('email', 'mobile_number')
-            ->whereNotNull('email')
-            ->orWhereNotNull('mobile_number')
-            ->distinct()
-            ->count();
-
-        // Students grouped by course (admission_for)
-        $studentsByCourse = Student::select('admission_for', DB::raw('COUNT(*) as total'))
+        $uniqueStudents = Student::select('email', 'mobile_number')->distinct()->count();
+        $studentsByCourse = Student::select('admission_for', DB::raw('count(*) as total'))
             ->groupBy('admission_for')
             ->pluck('total', 'admission_for')
             ->toArray();
 
-        return view('students.index', compact(
-            'students',
-            'totalStudents',
-            'uniqueStudents',
-            'studentsByCourse'
-        ));
+        // Prepare dropdown options dynamically
+        $dropdowns = [];
+        foreach ($filters as $filter) {
+            $dropdowns[$filter] = Student::select($filter)->distinct()->pluck($filter)->sort()->toArray();
+        }
+
+        return view('students.index', compact('students', 'totalStudents', 'uniqueStudents', 'studentsByCourse', 'dropdowns'));
     }
+
 
 
     public function import(Request $request)

@@ -18,16 +18,17 @@
         }
 
         .table-row-hover:hover {
-            background-color: #f3f4f6;
+            background-color: #f9fafb;
         }
     </style>
 </head>
 
 <body class="bg-gray-50 min-h-screen">
     <div class="container mx-auto px-4 py-8">
+
         <!-- Header -->
         <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-6">
-            <h1 class="text-3xl font-bold text-gray-900 mb-4 md:mb-0">Students Dashboard</h1>
+            <h1 class="text-3xl font-bold text-gray-900 mb-4 md:mb-0">🎓 Students Dashboard</h1>
             <div class="flex gap-2">
                 <form action="{{ route('students.import') }}" method="POST" enctype="multipart/form-data" id="import-form">
                     @csrf
@@ -45,42 +46,24 @@
             </div>
         </div>
 
-        <!-- Success Message -->
-        @if(session('success'))
-        <div class="mb-6 p-4 bg-green-50 border-l-4 border-green-500 text-green-700 rounded shadow">
-            {{ session('success') }}
-        </div>
-        @endif
-
         <!-- Statistics -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-            <div class="bg-white rounded-lg shadow p-5 flex justify-between items-center card-hover">
-                <div>
-                    <h3 class="text-sm text-gray-500">Total Students</h3>
-                    <p class="text-2xl font-bold text-indigo-600">{{ $totalStudents }}</p>
-                </div>
-                <i class="fa-solid fa-users text-indigo-500 text-3xl"></i>
+        <div class="grid md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow card-hover">
+                <h2 class="text-sm text-gray-500">Total Students</h2>
+                <p class="text-2xl font-bold text-indigo-600">{{ $totalStudents }}</p>
             </div>
-
-            <div class="bg-white rounded-lg shadow p-5 flex justify-between items-center card-hover">
-                <div>
-                    <h3 class="text-sm text-gray-500">Unique Students (Email/Phone)</h3>
-                    <p class="text-2xl font-bold text-green-600">{{ $uniqueStudents }}</p>
-                </div>
-                <i class="fa-solid fa-user-check text-green-500 text-3xl"></i>
+            <div class="bg-white p-4 rounded-lg shadow card-hover">
+                <h2 class="text-sm text-gray-500">Unique Students (Email/Phone)</h2>
+                <p class="text-2xl font-bold text-green-600">{{ $uniqueStudents }}</p>
             </div>
-
-            <div class="bg-white rounded-lg shadow p-5 flex justify-between items-center card-hover">
-                <div>
-                    <h3 class="text-sm text-gray-500">Courses Offered</h3>
-                    <p class="text-2xl font-bold text-amber-600">{{ count($studentsByCourse) }}</p>
-                </div>
-                <i class="fa-solid fa-book text-amber-500 text-3xl"></i>
+            <div class="bg-white p-4 rounded-lg shadow card-hover">
+                <h2 class="text-sm text-gray-500">Courses Offered</h2>
+                <p class="text-2xl font-bold text-amber-600">{{ count($studentsByCourse) }}</p>
             </div>
         </div>
 
         <!-- Students by Course -->
-        <div class="bg-white rounded-lg shadow p-6 mb-8">
+        <div class="bg-white rounded-lg shadow p-6 mb-6">
             <h2 class="text-lg font-semibold text-gray-800 mb-4">Students by Course</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                 @foreach($studentsByCourse as $course => $count)
@@ -92,54 +75,73 @@
             </div>
         </div>
 
-        <!-- Filters -->
-        <div class="flex flex-col lg:flex-row gap-4 mb-4 items-center justify-between">
-            <input type="text" id="search-input" placeholder="Search by name, email, phone..."
-                class="px-4 py-2 border rounded-lg w-full lg:w-1/3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <!-- Multi-Filter Dropdowns -->
+        <form method="GET" class="flex flex-wrap gap-2 mb-6">
+            @foreach($dropdowns as $field => $options)
+            <select name="{{ $field }}"
+                class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500">
+                <option value="">{{ ucfirst(str_replace('_', ' ', $field)) }}</option>
+                @foreach($options as $opt)
+                <option value="{{ $opt }}" {{ request($field)==$opt?'selected':'' }}>{{ $opt ?: 'N/A' }}</option>
+                @endforeach
+            </select>
+            @endforeach
+            <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">Apply</button>
+            <a href="{{ route('students.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">Clear</a>
+        </form>
 
-            <div class="flex gap-2 flex-wrap">
-                <select id="course-filter"
-                    class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    <option value="">All Courses</option>
-                    @foreach($studentsByCourse as $course => $count)
-                    <option value="{{ $course }}">{{ $course }}</option>
-                    @endforeach
-                </select>
-                <button onclick="clearFilters()"
-                    class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition">Clear</button>
-            </div>
-        </div>
-
-        <!-- Table View -->
+        <!-- Students Table -->
         <div class="overflow-x-auto bg-white rounded-lg shadow-lg">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-100 text-gray-700 uppercase text-sm">
+            <table class="min-w-full divide-y divide-gray-200 text-sm">
+                <thead class="bg-gray-100 text-gray-700">
                     <tr>
-                        <th class="px-6 py-3 text-left">Full Name</th>
-                        <th class="px-6 py-3 text-left">Email</th>
-                        <th class="px-6 py-3 text-left">Phone</th>
-                        <th class="px-6 py-3 text-left">Gender</th>
-                        <th class="px-6 py-3 text-left">Date of Birth</th>
-                        <th class="px-6 py-3 text-left">Admission For</th>
-                        <th class="px-6 py-3 text-left">Courses</th>
+                        <th class="px-4 py-2 text-left">Full Name</th>
+                        <th class="px-4 py-2 text-left">Father’s Name</th>
+                        <th class="px-4 py-2 text-left">Gender</th>
+                        <th class="px-4 py-2 text-left">DOB</th>
+                        <th class="px-4 py-2 text-left">Email</th>
+                        <th class="px-4 py-2 text-left">Mobile</th>
+                        <th class="px-4 py-2 text-left">Alternate</th>
+                        <th class="px-4 py-2 text-left">Emergency</th>
+                        <th class="px-4 py-2 text-left">Facebook</th>
+                        <th class="px-4 py-2 text-left">Present Address</th>
+                        <th class="px-4 py-2 text-left">Division</th>
+                        <th class="px-4 py-2 text-left">Country</th>
+                        <th class="px-4 py-2 text-left">Occupation</th>
+                        <th class="px-4 py-2 text-left">Admission For</th>
+                        <th class="px-4 py-2 text-left">Selected Courses</th>
+                        <th class="px-4 py-2 text-left">Payment</th>
+                        <th class="px-4 py-2 text-left">Transaction</th>
+                        <th class="px-4 py-2 text-left">Reference</th>
                     </tr>
                 </thead>
-                <tbody id="table-body" class="bg-white divide-y divide-gray-200">
-                    @foreach($students as $student)
+                <tbody class="divide-y divide-gray-200">
+                    @foreach($students as $s)
                     <tr class="table-row-hover">
-                        <td class="px-6 py-4">{{ $student->full_name }}</td>
-                        <td class="px-6 py-4">{{ $student->email }}</td>
-                        <td class="px-6 py-4">{{ $student->mobile_number }}</td>
-                        <td class="px-6 py-4 capitalize">{{ $student->gender }}</td>
-                        <td class="px-6 py-4">{{ optional($student->date_of_birth)->format('d M Y') }}</td>
-                        <td class="px-6 py-4">{{ $student->admission_for }}</td>
-                        <td class="px-6 py-4">
-                            @if(is_array($student->selected_courses))
-                            {{ implode(', ', $student->selected_courses) }}
+                        <td class="px-4 py-2">{{ $s->full_name }}</td>
+                        <td class="px-4 py-2">{{ $s->fathers_name }}</td>
+                        <td class="px-4 py-2">{{ ucfirst($s->gender) }}</td>
+                        <td class="px-4 py-2">{{ $s->date_of_birth }}</td>
+                        <td class="px-4 py-2">{{ $s->email }}</td>
+                        <td class="px-4 py-2">{{ $s->mobile_number }}</td>
+                        <td class="px-4 py-2">{{ $s->alternate_number }}</td>
+                        <td class="px-4 py-2">{{ $s->emergency_contact }}</td>
+                        <td class="px-4 py-2">{{ $s->facebook_id }}</td>
+                        <td class="px-4 py-2">{{ $s->present_address }}</td>
+                        <td class="px-4 py-2">{{ $s->present_division }}</td>
+                        <td class="px-4 py-2">{{ $s->country_name }}</td>
+                        <td class="px-4 py-2">{{ $s->present_occupation }}</td>
+                        <td class="px-4 py-2">{{ $s->admission_for }}</td>
+                        <td class="px-4 py-2">
+                            @if(is_array($s->selected_courses))
+                            {{ implode(', ', $s->selected_courses) }}
                             @else
-                            {{ $student->selected_courses }}
+                            {{ $s->selected_courses }}
                             @endif
                         </td>
+                        <td class="px-4 py-2">{{ $s->payment_method }} - {{ $s->payment_amount }}</td>
+                        <td class="px-4 py-2">{{ $s->transaction_id }}</td>
+                        <td class="px-4 py-2">{{ $s->reference }}</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -151,40 +153,6 @@
             {{ $students->links() }}
         </div>
     </div>
-
-    <script>
-        let allStudents = @json($students->items());
-        const searchInput = document.getElementById('search-input');
-        const courseFilter = document.getElementById('course-filter');
-
-        function filterStudents() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const selectedCourse = courseFilter.value;
-
-            const rows = document.querySelectorAll('#table-body tr');
-            rows.forEach(row => {
-                const name = row.children[0].textContent.toLowerCase();
-                const email = row.children[1].textContent.toLowerCase();
-                const phone = row.children[2].textContent.toLowerCase();
-                const course = row.children[6].textContent;
-
-                const matchesSearch =
-                    name.includes(searchTerm) || email.includes(searchTerm) || phone.includes(searchTerm);
-                const matchesCourse = !selectedCourse || course.includes(selectedCourse);
-
-                row.style.display = matchesSearch && matchesCourse ? '' : 'none';
-            });
-        }
-
-        function clearFilters() {
-            searchInput.value = '';
-            courseFilter.value = '';
-            filterStudents();
-        }
-
-        searchInput.addEventListener('input', filterStudents);
-        courseFilter.addEventListener('change', filterStudents);
-    </script>
 </body>
 
 </html>
