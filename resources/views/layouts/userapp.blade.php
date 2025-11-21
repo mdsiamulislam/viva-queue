@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Viva Queue System')</title>
+    <title>@yield('title', 'Submit Your Feedback')</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -103,22 +103,22 @@
                         </div>
                         <div class="hidden sm:block">
                             <h1 class="text-lg font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
-                                Viva Queue System
+                                Islamic Online Madrasah
                             </h1>
                             <p class="text-xs text-gray-500 dark:text-gray-400">
-                                Islamic Online Madrasah
+                                {{ $title }}
                             </p>
                         </div>
                     </a>
                 </div>
 
-                <!-- Navigation -->
+                <!-- Navigation
                 <div class="flex items-center gap-4">
                     <a href="{{ route('feedback.index') }}"
                         class="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors">
                         Manage Feedback
                     </a>
-                </div>
+                </div> -->
 
 
             </div>
