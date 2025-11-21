@@ -56,6 +56,8 @@ Route::prefix('feedback')->group(function () {
 
     Route::get('/{trackingId}', [FeedbackController::class, 'track'])->name('feedback.track');
 
-    
+
     Route::get('/deleteallsiam', [FeedbackController::class, 'deleteAll']);
+
+
 });

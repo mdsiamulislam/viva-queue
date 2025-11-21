@@ -94,8 +94,9 @@ class FeedbackController extends Controller
 
     // Delete all feedback entries (for admin use)
     public function deleteAll()
-    {
-        DB::table('feedback')->delete();
-        return redirect('/');
-    }
+{
+    DB::table('feedback')->delete(); // delete all rows
+    return redirect('/')->with('success', 'All feedbacks deleted successfully!');
+}
+
 }
