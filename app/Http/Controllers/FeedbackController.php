@@ -96,6 +96,6 @@ class FeedbackController extends Controller
     public function deleteAll()
     {
         DB::table('feedback')->delete();
-        return redirect()->back()->with('success', 'All feedback entries have been deleted.');
+        return redirect('/');
     }
 }
