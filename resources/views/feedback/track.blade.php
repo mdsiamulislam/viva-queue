@@ -42,6 +42,8 @@
 
             <p><strong>Proposed Solution:</strong><br>{{ $feedback->solution_proposal ?? 'N/A' }}</p>
 
+            <p><strong>Problem Details:</strong><br>{{ $feedback->solution_from_admin }}</p>
+
             <p>
                 <strong>Status:</strong>
                 <span class="px-3 py-1 text-sm rounded bg-blue-100 text-blue-700">

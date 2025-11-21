@@ -12,14 +12,14 @@
 
         <div class="max-w-xl mx-auto bg-white shadow-md rounded-xl p-6 border border-green-200">
 
-            <h2 class="text-2xl font-semibold text-green-700 mb-5">Submit Your Feedback</h2>
+            <h2 class="text-2xl font-semibold text-green-700 mb-5">Submit CR Feedback</h2>
 
             <form action="{{ route('feedback.store') }}" method="POST" class="space-y-4">
                 @csrf
 
                 <!-- Name -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Name (optional if anonymous)</label>
+                    <label class="block text-sm font-medium text-gray-700">Name</label>
                     <input type="text" name="name" value="{{ old('name') }}"
                         class="w-full mt-1 px-4 py-2 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
                 </div>
