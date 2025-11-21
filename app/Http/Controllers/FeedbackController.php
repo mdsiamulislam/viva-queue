@@ -91,4 +91,11 @@ class FeedbackController extends Controller
             'trackingId' => $trackingId
         ]);
     }
+
+    // Delete all feedback entries (for admin use)
+    public function deleteAll()
+    {
+        DB::table('feedback')->delete();
+        return redirect()->back()->with('success', 'All feedback entries have been deleted.');
+    }
 }
