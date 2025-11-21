@@ -96,15 +96,14 @@
                 Update Feedback
             </button>
         </form>
-        <button type="submit"
-            class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold text-sm transition">
-            Update Feedback
-        </button>
-    </div>
-    <button 
+        <button
+            onclick="if(confirm('Are you sure you want to delete this feedback? This action cannot be undone.')) { window.location='{{ route('feedback.delete', $feedback->id) }}'; }"
             class="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold text-sm transition">
             Delete Feedback
         </button>
+
+    </div>
+
 
 </div>
 @endsection

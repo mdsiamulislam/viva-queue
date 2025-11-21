@@ -92,6 +92,12 @@ class FeedbackController extends Controller
         ]);
     }
 
+    public function delete($id)
+    {
+        DB::table('feedback')->where('id', $id)->delete();
+        return redirect('/admin/feedbacks')->with('success', 'Feedback deleted successfully!');
+    }
+
     // Delete all feedback entries (for admin use)
     public function deleteAll()
 {

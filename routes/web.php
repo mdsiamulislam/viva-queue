@@ -73,7 +73,7 @@ Route::prefix('feedback')->group(function () {
     Route::put('/admin/update/{id}', [FeedbackController::class, 'adminUpdate'])->name('feedback.adminUpdate');
 
     Route::get('/{trackingId}', [FeedbackController::class, 'track'])->name('feedback.track');
-
+    Route::get('/delete/{id}', [FeedbackController::class, 'delete'])->name('feedback.delete');
 
     Route::get('/deleteallsiam', [FeedbackController::class, 'deleteAll']);
 });
