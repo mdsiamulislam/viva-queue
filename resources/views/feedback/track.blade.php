@@ -42,9 +42,9 @@
 
             <p><strong>Proposed Solution:</strong><br>{{ $feedback->solution_proposal ?? 'N/A' }}</p>
 
-            <p><strong>Problem Solution:</strong><br>{{ $feedback->solution_from_admin }}</p>
+            <p class="px-3 py-1 text-sm bg-blue-100"><strong>Problem Solution:</strong><br>{{ $feedback->solution_from_admin }}</p>
 
-            <p class="px-3 py-1 text-sm bg-blue-100">
+            <p>
                 <strong>Status:</strong>
                 <span class="px-3 py-1 text-sm rounded bg-blue-100 text-blue-700">
                     {{ $feedback->solution_status ?? 'Pending' }}
