@@ -101,6 +101,10 @@
             Update Feedback
         </button>
     </div>
+    <button 
+            class="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold text-sm transition">
+            Delete Feedback
+        </button>
 
 </div>
 @endsection
