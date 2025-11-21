@@ -54,5 +54,5 @@ Route::prefix('feedback')->group(function () {
     Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
     Route::put('/admin/update/{id}', [FeedbackController::class, 'adminUpdate'])->name('feedback.adminUpdate');
 
-    Route::get('/feedback/{trackingId}', [FeedbackController::class, 'track'])->name('feedback.track');
+    Route::get('/{trackingId}', [FeedbackController::class, 'track'])->name('feedback.track');
 });
