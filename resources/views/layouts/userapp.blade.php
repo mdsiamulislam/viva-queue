@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Submit Your Feedback')</title>
+    <!-- favicon -->
+    <link rel="icon" type="image/png" href="https://iom.edu.bd/wp-content/uploads/2023/05/cropped-iom.jpg" />
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>

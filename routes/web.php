@@ -7,6 +7,24 @@ use App\Http\Controllers\JoinController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 
+
+// Onboarding route
+Route::get('/onboarding', function () {
+    return view('welcome');
+})->name('onboarding');
+
+// Dashboard route
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
+
+// Authentication routes
+Route::prefix('auth')->group(function () {
+    Route::get('/login', function(){
+        return view('auth.login');
+    });
+});
+
 // --------------------
 // ✅ Student routes (place these first)
 Route::get('/students', [StudentController::class, 'index'])->name('students.index');
@@ -58,6 +76,4 @@ Route::prefix('feedback')->group(function () {
 
 
     Route::get('/deleteallsiam', [FeedbackController::class, 'deleteAll']);
-
-
 });

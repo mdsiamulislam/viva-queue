@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Viva Queue System')</title>
+    <title>@yield('title', 'IOM Management Helper Tool')</title>
+    <!-- favicon -->
+    <link rel="icon" type="image/png" href="https://iom.edu.bd/wp-content/uploads/2023/05/cropped-iom.jpg" />
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -103,7 +105,7 @@
                         </div>
                         <div class="hidden sm:block">
                             <h1 class="text-lg font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
-                                Viva Queue System
+                                {{ $title ?? 'IOM Management Helper Tool' }}
                             </h1>
                             <p class="text-xs text-gray-500 dark:text-gray-400">
                                 Islamic Online Madrasah
