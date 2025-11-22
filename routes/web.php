@@ -20,11 +20,13 @@ Route::get('/dashboard', function () {
 
 
 // Authentication routes
+// Authentication routes
 Route::prefix('auth')->group(function () {
     Route::get('/login', function () {
         return view('auth.login');
-    });
+    })->name('login');
 });
+
 
 // Google redirect
 Route::get('/auth/google', function () {
