@@ -1,29 +1,39 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FeedbackController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\JoinController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
-
+use Laravel\Socialite\Socialite;
 
 // Onboarding route
 Route::get('/onboarding', function () {
     return view('welcome');
 })->name('onboarding');
 
-// Dashboard route
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->name('dashboard');
+})->middleware('auth')->name('dashboard');
+
 
 // Authentication routes
 Route::prefix('auth')->group(function () {
-    Route::get('/login', function(){
+    Route::get('/login', function () {
         return view('auth.login');
     });
 });
+
+// Google redirect
+Route::get('/auth/google', function () {
+    return Socialite::driver('google')->redirect();
+});
+
+// Callback
+Route::get('/auth/google/callback', [AuthController::class, 'googleCallback']);
+
 
 // --------------------
 // ✅ Student routes (place these first)

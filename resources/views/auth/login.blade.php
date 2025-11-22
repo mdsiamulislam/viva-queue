@@ -213,10 +213,7 @@
 
         // Google Login Handler
         function handleGoogleLogin() {
-            // Replace with your actual Google OAuth implementation
-            // For now, it redirects to dashboard
-            alert('Google login would be implemented here.\nRedirecting to dashboard...');
-            window.location.href = '/dashboard';
+             window.location.href = '/auth/google';
         }
 
         // You can implement actual Google OAuth like this:
