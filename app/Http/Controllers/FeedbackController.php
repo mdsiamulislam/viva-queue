@@ -17,17 +17,19 @@ class FeedbackController extends Controller
 
     public function store(Request $request)
     {
+        // Validate input
         $request->validate([
             'name' => 'required|string|max:255',
             'roll' => 'required|integer',
-            'phone' => 'required|integer',
+            'phone' => 'required|digits_between:8,15',
             'email' => 'nullable|email',
             'problem_type' => 'required|string|max:255',
             'problem_details' => 'required|string',
             'solution_proposal' => 'nullable|string',
-            'is_anonymous' => 'boolean',
+            'is_anonymous' => 'nullable|boolean',
         ]);
 
+        // Insert feedback
         $id = DB::table('feedback')->insertGetId([
             'name' => $request->input('name'),
             'roll' => $request->input('roll'),
@@ -37,16 +39,17 @@ class FeedbackController extends Controller
             'problem_details' => $request->input('problem_details'),
             'solution_proposal' => $request->input('solution_proposal'),
             'is_anonymous' => $request->has('is_anonymous'),
+            'solution_status' => 'Pending',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
-        // Create tracking ID
         $trackingId = 'iomfeedback' . $id;
 
         return redirect()->route('feedback.track', ['trackingId' => $trackingId])
             ->with('success', 'Feedback submitted successfully! Your Tracking ID is: ' . $trackingId);
     }
+
 
     public function adminUpdate(Request $request, $id)
     {

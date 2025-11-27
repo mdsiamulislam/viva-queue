@@ -96,9 +96,9 @@ Route::prefix('feedback')->group(function () {
         return view('feedback.user_feedback');
     })->name('feedback.add');
     Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
-    Route::put('/admin/update/{id}', [FeedbackController::class, 'adminUpdate'])->name('feedback.adminUpdate');
     Route::get('/{trackingId}', [FeedbackController::class, 'track'])->name('feedback.track');
 });
+
 
 
 // -------------------- Get Together routes -------------------- //
