@@ -99,3 +99,11 @@ Route::prefix('feedback')->group(function () {
     Route::put('/admin/update/{id}', [FeedbackController::class, 'adminUpdate'])->name('feedback.adminUpdate');
     Route::get('/{trackingId}', [FeedbackController::class, 'track'])->name('feedback.track');
 });
+
+
+// -------------------- Get Together routes -------------------- //
+Route::prefix('gettogether')->group(function () {
+    Route::get('/manage', function () {
+        return view('gettogether.index');
+    })->name('gettogether.index');
+});
