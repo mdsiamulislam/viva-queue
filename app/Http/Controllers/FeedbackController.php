@@ -11,7 +11,7 @@ class FeedbackController extends Controller
     public function index()
     {
 
-        $feedbacks = DB::table('feedback')->get();
+        $feedbacks = DB::table('feedback')->orderBy('created_at', 'desc')->get();
         return view('feedback.index', ['feedbacks' => $feedbacks]);
     }
 

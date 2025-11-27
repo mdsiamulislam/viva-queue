@@ -105,5 +105,12 @@ Route::prefix('feedback')->group(function () {
 Route::prefix('gettogether')->group(function () {
     Route::get('/manage', function () {
         return view('gettogether.index');
-    })->name('gettogether.index');
+    })->middleware('auth')->name('gettogether.index');
 });
+
+
+
+// -------------------- Universal Page -------------------- //
+Route::get('/error', function () {
+    return view('universal.error');
+})->name('universal.error');

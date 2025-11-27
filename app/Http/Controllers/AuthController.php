@@ -13,7 +13,7 @@ class AuthController extends Controller
         $googleUser = Socialite::driver('google')->stateless()->user();
 
         // allowed email
-        $staticEmail = 'soaib.softdev@gmail.com';
+        $staticEmail = 'soaib.softdev@gmail.com, mazhar@iom.edu.bd';
 
         if ($googleUser->getEmail() !== $staticEmail) {
             return redirect()->route('login')->with('error', 'Unauthorized email address');
