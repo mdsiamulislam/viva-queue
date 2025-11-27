@@ -2,11 +2,6 @@
 
 @section('content')
 <div class="container px-4 py-6">
-
-    @if(session('success'))
-    <div class="alert alert-success mb-4">{{ session('success') }}</div>
-    @endif
-
     <div class="max-w-xl mx-auto bg-white shadow-md rounded-xl p-4 sm:p-6 border border-green-200">
 
         <h2 class="text-xl sm:text-2xl font-semibold text-green-700 mb-4 sm:mb-5">Submit CR Feedback</h2>
