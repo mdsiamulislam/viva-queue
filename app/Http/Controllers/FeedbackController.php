@@ -95,14 +95,13 @@ class FeedbackController extends Controller
     public function delete($id)
     {
         DB::table('feedback')->where('id', $id)->delete();
-        return redirect('/admin/feedbacks')->with('success', 'Feedback deleted successfully!');
+        return redirect()->route('feedback.index')->with('success', 'Feedback deleted successfully!');
     }
 
     // Delete all feedback entries (for admin use)
     public function deleteAll()
-{
-    DB::table('feedback')->delete(); // delete all rows
-    return redirect('/')->with('success', 'All feedbacks deleted successfully!');
-}
-
+    {
+        DB::table('feedback')->delete(); // delete all rows
+        return redirect()->route('feedback.index')->with('success', 'All feedbacks deleted successfully!');
+    }
 }

@@ -8,33 +8,51 @@ use App\Http\Controllers\JoinController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use Laravel\Socialite\Socialite;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
-// Onboarding route
 Route::get('/onboarding', function () {
     return view('welcome');
 })->name('onboarding');
+
+Route::prefix('auth')->group(function () {
+
+    Route::get('/login', function () {
+        return view('auth.login');
+    })->name('login');
+
+    // STEP 1 : redirect to Google
+    Route::get('/google', function () {
+        return Socialite::driver('google')->redirect();
+    })->name('google.redirect');
+
+    // STEP 2 : Google callback hits here
+    Route::get('/google/callback', [AuthController::class, 'googleCallback'])
+        ->name('google.callback');
+});
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware('auth')->name('dashboard');
 
 
-// Authentication routes
-// Authentication routes
-Route::prefix('auth')->group(function () {
-    Route::get('/login', function () {
-        return view('auth.login');
-    })->name('login');
+
+
+// -------------------- Admin routes -------------------- //
+Route::prefix('admin')->group(function () {
+    Route::get('/logout', function () {
+        Auth::logout();
+        return redirect()->route('login');
+    })->name('logout');
+
+
+    // -------------------- Feedback management for admin --------------------
+    Route::get('/feedback', [FeedbackController::class, 'index'])->middleware('auth')->name('feedback.index');
+    Route::get('/update/{id}', [FeedbackController::class, 'edit'])->middleware('auth')->name('feedback.adminEdit');
+    Route::get('/delete/{id}', [FeedbackController::class, 'delete'])->middleware('auth')->name('feedback.delete');
+    Route::get('/deleteallsiam', [FeedbackController::class, 'deleteAll'])->middleware('auth')->name('feedback.deleteAll');
 });
-
-
-// Google redirect
-Route::get('/auth/google', function () {
-    return Socialite::driver('google')->redirect();
-});
-
-// Callback
-Route::get('/auth/google/callback', [AuthController::class, 'googleCallback']);
 
 
 // --------------------
@@ -74,18 +92,10 @@ Route::post('/{code}/entry/{id}/remove', [TeacherController::class, 'removeEntry
 
 // Route group for feedback management
 Route::prefix('feedback')->group(function () {
-    Route::get('/2dd8a8e6-61b9-a7f3c9e1-4b2d--4b2d-8f6a-9c3e-58f6a-9c3e-5d7b1a8f4c2e4301-9587Xk9mP2vL8nQ4rT7w-8e14fad677bf', [FeedbackController::class, 'index'])->name('feedback.index');
-
     Route::get('/add', function () {
         return view('feedback.user_feedback');
     })->name('feedback.add');
-    Route::get('/admin/update/{id}/b9-a7f3c9e1-4b2d--4b2d-8f6a-9c3e-58f6a-9c3e-5d7b1a8f4c2e4301-95fsgfsd87Xk9mP2vL8nQ4rT7w-8e14fad677bf', [FeedbackController::class, 'edit'])->name('feedback.adminEdit');
-
     Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
     Route::put('/admin/update/{id}', [FeedbackController::class, 'adminUpdate'])->name('feedback.adminUpdate');
-
     Route::get('/{trackingId}', [FeedbackController::class, 'track'])->name('feedback.track');
-    Route::get('/delete/{id}', [FeedbackController::class, 'delete'])->name('feedback.delete');
-
-    Route::get('/deleteallsiam', [FeedbackController::class, 'deleteAll']);
 });

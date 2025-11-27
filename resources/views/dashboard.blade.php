@@ -115,7 +115,7 @@
         <!-- Tools Grid -->
         <div class="card-grid">
             <!-- Student Management -->
-            <div class="tool-card bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-8 animate-slide-up" style="animation-delay: 0s">
+            <!-- <div class="tool-card bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-8 animate-slide-up" style="animation-delay: 0s">
                 <div class="w-14 h-14 bg-primary bg-opacity-20 rounded-lg flex items-center justify-center mb-6 animate-bounce-subtle">
                     <svg class="w-7 h-7 text-primary" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v4h8v-4zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
@@ -126,7 +126,7 @@
                 <a href="#" class="inline-block bg-primary hover:bg-primary-dark text-white px-6 py-2 rounded-lg font-semibold transition transform hover:scale-105">
                     Access Tool
                 </a>
-            </div>
+            </div> -->
 
             <!-- Feedback System -->
             <div class="tool-card bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-8 animate-slide-up" style="animation-delay: 0.1s">
@@ -136,14 +136,14 @@
                     </svg>
                 </div>
                 <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">Feedback System</h3>
-                <p class="text-gray-600 dark:text-gray-400 mb-6">Collect and analyze detailed feedback from students, parents, and instructors to improve quality.</p>
-                <a href="#" class="inline-block bg-primary hover:bg-primary-dark text-white px-6 py-2 rounded-lg font-semibold transition transform hover:scale-105">
+                <p class="text-gray-600 dark:text-gray-400 mb-6">Collect and analyze detailed feedback from CR to improve quality.</p>
+                <a href="{{ route('feedback.index') }}" class="inline-block bg-primary hover:bg-primary-dark text-white px-6 py-2 rounded-lg font-semibold transition transform hover:scale-105">
                     Access Tool
                 </a>
             </div>
 
-            <!-- Room Management -->
-            <div class="tool-card bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-8 animate-slide-up" style="animation-delay: 0.2s">
+            <!-- Room Management
+            <div class="tool-card bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-8 animate-slide-up opacity-50 pointer-events-none select-none grayscale" style="animation-delay: 0.2s">
                 <div class="w-14 h-14 bg-primary bg-opacity-20 rounded-lg flex items-center justify-center mb-6 animate-bounce-subtle" style="animation-delay: 0.4s">
                     <svg class="w-7 h-7 text-primary" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
@@ -154,10 +154,10 @@
                 <a href="#" class="inline-block bg-primary hover:bg-primary-dark text-white px-6 py-2 rounded-lg font-semibold transition transform hover:scale-105">
                     Access Tool
                 </a>
-            </div>
+            </div> -->
 
             <!-- Communications -->
-            <div class="tool-card bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-8 animate-slide-up" style="animation-delay: 0.3s">
+            <!-- <div class="tool-card bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-8 animate-slide-up" style="animation-delay: 0.3s">
                 <div class="w-14 h-14 bg-primary bg-opacity-20 rounded-lg flex items-center justify-center mb-6 animate-bounce-subtle" style="animation-delay: 0.6s">
                     <svg class="w-7 h-7 text-primary" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
@@ -169,10 +169,10 @@
                 <a href="#" class="inline-block bg-primary hover:bg-primary-dark text-white px-6 py-2 rounded-lg font-semibold transition transform hover:scale-105">
                     Access Tool
                 </a>
-            </div>
+            </div> -->
 
             <!-- Financial Management -->
-            <div class="tool-card bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-8 animate-slide-up" style="animation-delay: 0.4s">
+            <!-- <div class="tool-card bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-8 animate-slide-up" style="animation-delay: 0.4s">
                 <div class="w-14 h-14 bg-primary bg-opacity-20 rounded-lg flex items-center justify-center mb-6 animate-bounce-subtle" style="animation-delay: 0.8s">
                     <svg class="w-7 h-7 text-primary" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" />
@@ -183,10 +183,10 @@
                 <a href="#" class="inline-block bg-primary hover:bg-primary-dark text-white px-6 py-2 rounded-lg font-semibold transition transform hover:scale-105">
                     Access Tool
                 </a>
-            </div>
+            </div> -->
 
             <!-- User Management -->
-            <div class="tool-card bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-8 animate-slide-up" style="animation-delay: 0.5s">
+            <!-- <div class="tool-card bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-8 animate-slide-up" style="animation-delay: 0.5s">
                 <div class="w-14 h-14 bg-primary bg-opacity-20 rounded-lg flex items-center justify-center mb-6 animate-bounce-subtle" style="animation-delay: 1s">
                     <svg class="w-7 h-7 text-primary" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.533 1.533 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.533 1.533 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
@@ -197,7 +197,7 @@
                 <a href="#" class="inline-block bg-primary hover:bg-primary-dark text-white px-6 py-2 rounded-lg font-semibold transition transform hover:scale-105">
                     Access Tool
                 </a>
-            </div>
+            </div> -->
         </div>
     </main>
 
