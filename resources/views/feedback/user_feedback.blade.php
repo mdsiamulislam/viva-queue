@@ -48,12 +48,12 @@
                 <select name="problem_type" required
                     class="w-full mt-1 px-4 py-2 border border-green-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-green-500">
                     <option value="" disabled selected>Select a problem type</option>
-                    <option value="Class">Academic</option>
-                    <option value="Course">Technical</option>
-                    <option value="Teacher">Facility</option>
-                    <option value="Fees and Payment">Administrative</option>
-                    <option value="Management">Other</option>
-                    <option value="Time and Schedule">Other</option>
+                    <option value="Class">Class</option>
+                    <option value="Course">Course</option>
+                    <option value="Teacher">Teacher</option>
+                    <option value="Fees and Payment">Fees and Payment</option>
+                    <option value="Management">Management</option>
+                    <option value="Time and Schedule">Time and Schedule</option>
                     <option value="Other">Other</option>
                 </select>
             </div>
