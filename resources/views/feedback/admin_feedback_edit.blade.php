@@ -17,10 +17,14 @@
             <p><strong class="font-medium">Problem Type:</strong> {{ $feedback->problem_type }}</p>
 
             <p><strong class="font-medium">Name:</strong>
+                {{ $feedback->name }}
+            </p>
+
+            <p><strong class="font-medium">Submitted Type:</strong>
                 @if($feedback->is_anonymous)
                 <span class="text-gray-500 italic">Anonymous</span>
                 @else
-                {{ $feedback->name }}
+                <span>Identified</span>
                 @endif
             </p>
 
