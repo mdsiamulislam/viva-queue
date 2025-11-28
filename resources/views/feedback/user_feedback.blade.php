@@ -88,7 +88,7 @@
 
             <!-- Anonymous -->
             <div class="flex items-center gap-2 py-2">
-                <input id="anony" type="checkbox" name="is_anonymous" value="1" {{ old('is_anonymous', true) ? 'checked' : '' }}
+                <input id="anony" type="checkbox" name="is_anonymous" value="1" {{ old('is_anonymous', false) ? 'checked' : '' }}
                     class="h-5 w-5 text-green-600 border-green-300 rounded focus:ring-green-500 cursor-pointer">
                 <label for="anony" class="text-sm sm:text-base text-gray-700 cursor-pointer select-none">Submit Anonymously</label>
             </div>
