@@ -1,4 +1,3 @@
-{{-- resources/views/errors/universal.blade.php --}}
 @extends('layouts.app', ['title' => 'Oops! Something went wrong'])
 
 @section('content')

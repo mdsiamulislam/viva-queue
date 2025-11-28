@@ -15,6 +15,13 @@ Route::get('/onboarding', function () {
     return view('welcome');
 })->name('onboarding');
 
+// -------------------- Universal Page -------------------- //
+Route::get('/truti', function () {
+    return view('universal.truti');
+});
+
+
+
 Route::prefix('auth')->group(function () {
 
     Route::get('/login', function () {
@@ -108,10 +115,3 @@ Route::prefix('gettogether')->group(function () {
         return view('gettogether.index');
     })->middleware('auth')->name('gettogether.index');
 });
-
-
-
-// -------------------- Universal Page -------------------- //
-Route::get('/error', function () {
-    return view('universal.error');
-})->name('universal.error');
