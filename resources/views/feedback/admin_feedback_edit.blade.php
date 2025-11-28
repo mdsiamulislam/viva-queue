@@ -20,11 +20,11 @@
                 {{ $feedback->name }}
             </p>
 
-            <p><strong class="font-medium">Submitted Type:</strong>
+            <p><strong class="font-medium">Submit Type:</strong>
                 @if($feedback->is_anonymous)
                 <span class="text-gray-500 italic">Anonymous</span>
                 @else
-                <span>Identified</span>
+                <span class="text-gray-700">Named Submission</span>
                 @endif
             </p>
 
@@ -67,6 +67,7 @@
         <form action="{{ route('feedback.adminUpdate', $feedback->id) }}" method="POST" class="space-y-3 sm:space-y-4">
             @csrf
 
+
             <!-- Status Dropdown -->
             <div>
                 <label class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Solution Status</label>
@@ -84,14 +85,14 @@
             <div>
                 <label class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Admin Solution / Action</label>
                 <textarea name="solution_from_admin" rows="4"
-                    class="w-full border border-green-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:outline-none text-sm sm:text-base resize-y"></textarea>
+                    class="w-full border border-green-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:outline-none text-sm sm:text-base resize-y">{{ old('solution_from_admin', $feedback->solution_from_admin) }}</textarea>
             </div>
 
             <!-- Remarks -->
             <div>
                 <label class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Remarks (optional)</label>
                 <textarea name="remarks" rows="2"
-                    class="w-full border border-green-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:outline-none text-sm sm:text-base resize-y"></textarea>
+                    class="w-full border border-green-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:outline-none text-sm sm:text-base resize-y">{{ old('remarks', $feedback->remarks) }}</textarea>
             </div>
 
             <!-- Buttons -->
