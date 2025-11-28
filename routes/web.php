@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\GetoStudentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\JoinController;
@@ -111,7 +112,38 @@ Route::prefix('feedback')->group(function () {
 
 // -------------------- Get Together routes -------------------- //
 Route::prefix('gettogether')->group(function () {
-    Route::get('/manage', function () {
-        return view('gettogether.index');
-    })->middleware('auth')->name('gettogether.index');
+
+
+
+    Route::prefix('public')->group(function () {
+
+        Route::get('/welcome', function () {
+            return view('gettogether.public_welcome');
+        })->name('gettogether.public.welcome');
+
+        Route::get('/info', function () {
+            return view('gettogether.public_info');
+        })->name('gettogether.public.info');
+    });
+
+
+
+    // ----------------- (2) PROTECTED ROUTES -----------------
+    Route::prefix('admin')->middleware('auth')->group(function () {
+
+        Route::get('/manage', function () {
+            return view('gettogether.index');
+        })->name('gettogether.index');
+
+        Route::post('/geto/import', [GetoStudentController::class, 'import'])->name('geto.import');
+
+        Route::get('/students/import/status', function () {
+            return view('gettogether.import-status');
+        })->name('students.import.status');
+
+
+        Route::get('/settings', function () {
+            return view('gettogether.settings');
+        })->name('gettogether.admin.settings');
+    });
 });
