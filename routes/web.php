@@ -50,10 +50,7 @@ Route::prefix('admin')->group(function () {
     // -------------------- Feedback management for admin --------------------
     Route::get('/feedback', [FeedbackController::class, 'index'])->middleware('auth')->name('feedback.index');
     Route::get('/update/{id}', [FeedbackController::class, 'edit'])->middleware('auth')->name('feedback.adminEdit');
-    
-     Route::post('/updatefeedback/{id}', [FeedbackController::class, 'adminUpdate'])->middleware('auth')->name('feedback.adminUpdate');
-    
-    
+    Route::get('/updatefeedback/{id}', [FeedbackController::class, 'adminUpdate'])->middleware('auth')->name('feedback.adminUpdate');
     Route::get('/delete/{id}', [FeedbackController::class, 'delete'])->middleware('auth')->name('feedback.delete');
     Route::get('/deleteallsiam', [FeedbackController::class, 'deleteAll'])->middleware('auth')->name('feedback.deleteAll');
 });
