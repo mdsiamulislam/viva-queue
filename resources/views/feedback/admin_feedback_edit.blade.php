@@ -8,6 +8,20 @@
         Review Feedback
     </h2>
 
+    <!-- Back Button -->
+    <div>
+        <a href="{{ route('feedback.index') }}"
+           class="inline-flex items-center space-x-3 mb-4 px-4 py-2 bg-white border border-green-200 text-green-700 rounded-lg shadow-sm hover:shadow-md hover:bg-green-50 transition focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-green-400"
+           title="Back to Feedback List" aria-label="Back to Feedback List">
+            <!-- Left arrow icon -->
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+            </svg>
+
+            <span class="font-medium text-sm sm:text-base">Back to Feedback List</span>
+        </a>
+    </div>
+
     <!-- Feedback Information Card -->
     <div class="bg-white shadow-md border border-green-200 rounded-xl p-4 sm:p-6 overflow-hidden">
         <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-4">Feedback Information</h3>
@@ -24,7 +38,7 @@
                 @if($feedback->is_anonymous)
                 <span class="text-gray-500 italic">Anonymous</span>
                 @else
-                <span class="text-gray-700">Named Submission</span>
+                <span class="text-gray-700">Identified</span>
                 @endif
             </p>
 
