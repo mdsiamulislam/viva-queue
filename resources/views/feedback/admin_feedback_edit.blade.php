@@ -66,7 +66,6 @@
 
         <form action="{{ route('feedback.adminUpdate', $feedback->id) }}" method="POST" class="space-y-3 sm:space-y-4">
             @csrf
-            @method('PUT')
 
             <!-- Status Dropdown -->
             <div>
