@@ -65,16 +65,8 @@
 
 <script>
     const roomCode = "{{ $room->code }}";
-    const isAdmin = {
-        {
-            $isAdmin ? 'true' : 'false'
-        }
-    };
-    const defaultDurationSeconds = {
-        {
-            $room - > expected_duration_minutes * 60
-        }
-    };
+    const isAdmin = {{ $isAdmin ? 'true' : 'false' }};
+    const defaultDurationSeconds = {{ $room->expected_duration_minutes * 60 }};
 
     function calculateElapsedTime(startedAt) {
         if (!startedAt) return 0;
