@@ -5,6 +5,7 @@ use App\Http\Controllers\FeedbackController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\JoinController;
+use App\Http\Controllers\SalsabilBlogsController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use Laravel\Socialite\Socialite;
@@ -127,4 +128,7 @@ Route::prefix('salsabil')->group(function () {
     Route::get('/app', function () {
         return view('salsabil.index');
     })->name('salsabil.index');
+
+    // Salsabil Blog Routes
+    Route::get('/blogs', [SalsabilBlogsController::class, 'index'])->name('salsabil.blogs.index');
 });
