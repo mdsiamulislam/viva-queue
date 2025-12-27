@@ -3,10 +3,15 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Viva Queue</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salsabil App</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/salsabil/fab_icon.png') }}">
 
-    {{-- Tailwind CDN (simple setup) --}}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Salsabil is a beautifully designed mobile app that helps you stay connected with daily duas, azkar, and essential Islamic resources.">
+    <meta name="keywords" content="Salsabil, Islamic App, Duas, Azkar, Islamic Resources, Mobile App">
+    <meta name="author" content="Salsabil Team">
+
+    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script>
@@ -14,7 +19,7 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#16a34a', // green
+                        primary: '#16a34a',
                     }
                 }
             }
@@ -27,40 +32,50 @@
     <!-- Navbar -->
     <header class="border-b">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="text-xl font-semibold text-primary">
-                Viva Queue
-            </h1>
-
+            <img src="{{ asset('images/salsabil/logo.png') }}" alt="Salsabil Logo" class="h-10">
             <nav class="space-x-6 text-sm">
                 <a href="#features" class="hover:text-primary">Features</a>
-                <a href="#about" class="hover:text-primary">About</a>
-                <a href="#contact" class="hover:text-primary">Contact</a>
+                <a href="#screens" class="hover:text-primary">Screens</a>
+                <a href="#download" class="hover:text-primary">Download</a>
             </nav>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="max-w-7xl mx-auto px-6 py-24 text-center">
-        <h2 class="text-4xl md:text-5xl font-bold leading-tight">
-            Smart & Simple
-            <span class="text-primary">Queue Management</span>
-        </h2>
+    <section class="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center">
+        <!-- Left -->
+        <div>
+            <h2 class="text-4xl md:text-5xl font-bold leading-tight">
+                Your Daily
+                <span class="text-primary">Islamic Companion</span>
+            </h2>
 
-        <p class="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
-            Viva Queue helps organizations manage queues efficiently,
-            reduce waiting time, and improve customer experience.
-        </p>
+            <p class="mt-6 text-lg text-gray-600">
+                Salsabil is a beautifully designed mobile app that helps you
+                stay connected with daily duas, azkar, and essential Islamic resources.
+            </p>
 
-        <div class="mt-10 flex justify-center gap-4">
-            <a href="#contact"
-                class="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-green-700 transition">
-                Get Started
-            </a>
+            <div class="mt-8 flex gap-4">
+                <a href="#download"
+                    class="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-green-700 transition">
+                    Download App
+                </a>
 
-            <a href="#about"
-                class="border border-primary text-primary px-6 py-3 rounded-lg font-medium hover:bg-green-50 transition">
-                Learn More
-            </a>
+                <a href="#features"
+                    class="border border-primary text-primary px-6 py-3 rounded-lg font-medium hover:bg-green-50 transition">
+                    Explore Features
+                </a>
+            </div>
+        </div>
+
+        <!-- Right (Mobile Mockup) -->
+        <div class="flex justify-center">
+            <div class="w-[260px] bg-gray-100 rounded-3xl shadow-lg p-4">
+                <img
+                    src="https://placehold.co/300x600?text=Salsabil+App+Demo"
+                    alt="Salsabil App Demo"
+                    class="rounded-2xl">
+            </div>
         </div>
     </section>
 
@@ -68,76 +83,125 @@
     <section id="features" class="bg-gray-50 py-20">
         <div class="max-w-7xl mx-auto px-6">
             <h3 class="text-3xl font-semibold text-center mb-12">
-                Key Features
+                What You’ll Get in Salsabil
             </h3>
 
-            <div class="grid md:grid-cols-3 gap-8">
+            <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
+                <!-- Blog -->
                 <div class="bg-white p-6 rounded-xl shadow-sm">
                     <h4 class="font-semibold text-lg mb-2 text-primary">
-                        Live Queue Tracking
+                        Islamic Blogs
                     </h4>
                     <p class="text-gray-600 text-sm">
-                        Monitor queue status in real-time with accurate updates.
+                        Read well-written Islamic articles and reflections anytime.
                     </p>
                 </div>
 
+                <!-- Audio -->
                 <div class="bg-white p-6 rounded-xl shadow-sm">
                     <h4 class="font-semibold text-lg mb-2 text-primary">
-                        Token System
+                        Audio Content
                     </h4>
                     <p class="text-gray-600 text-sm">
-                        Issue digital tokens and manage customer flow easily.
+                        Listen to duas, lectures, and reminders on the go.
                     </p>
                 </div>
 
+                <!-- Video -->
                 <div class="bg-white p-6 rounded-xl shadow-sm">
                     <h4 class="font-semibold text-lg mb-2 text-primary">
-                        Admin Dashboard
+                        Video Library
                     </h4>
                     <p class="text-gray-600 text-sm">
-                        Control queues, users, and analytics from one place.
+                        Watch Islamic videos and short reminders inside the app.
+                    </p>
+                </div>
+
+                <!-- News -->
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <h4 class="font-semibold text-lg mb-2 text-primary">
+                        Islamic News
+                    </h4>
+                    <p class="text-gray-600 text-sm">
+                        Stay updated with authentic and relevant Islamic news.
+                    </p>
+                </div>
+
+                <!-- Posters -->
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <h4 class="font-semibold text-lg mb-2 text-primary">
+                        Islamic Posters
+                    </h4>
+                    <p class="text-gray-600 text-sm">
+                        Beautiful posters with ayahs, hadith, and reminders.
+                    </p>
+                </div>
+
+                <!-- Offline -->
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <h4 class="font-semibold text-lg mb-2 text-primary">
+                        Offline Access
+                    </h4>
+                    <p class="text-gray-600 text-sm">
+                        Save content and access it even without internet.
                     </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- About -->
-    <section id="about" class="max-w-7xl mx-auto px-6 py-20">
-        <div class="max-w-3xl mx-auto text-center">
-            <h3 class="text-3xl font-semibold mb-6">
-                About Viva Queue
+
+    <!-- App Screens -->
+    <section id="screens" class="py-20">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <h3 class="text-3xl font-semibold mb-10">
+                App Preview
             </h3>
-            <p class="text-gray-600 leading-relaxed">
-                Viva Queue is a modern queue management system designed for
-                hospitals, institutions, and service centers.
-                Our goal is to simplify operations and deliver a smooth experience
-                for both admins and customers.
-            </p>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <img src="https://placehold.co/200x400?text=Home" class="rounded-xl shadow">
+                <img src="https://placehold.co/200x400?text=Azkars" class="rounded-xl shadow">
+                <img src="https://placehold.co/200x400?text=Hadith" class="rounded-xl shadow">
+                <img src="https://placehold.co/200x400?text=Profile" class="rounded-xl shadow">
+            </div>
         </div>
     </section>
 
-    <!-- Contact / CTA -->
-    <section id="contact" class="bg-primary py-16">
+    <!-- Download -->
+    <section id="download" class="bg-primary py-20">
         <div class="max-w-7xl mx-auto px-6 text-center text-white">
             <h3 class="text-3xl font-semibold mb-4">
-                Ready to Get Started?
+                Download Salsabil App
             </h3>
-            <p class="mb-6 text-green-100">
-                Contact us today and transform the way you manage queues.
+            <p class="mb-10 text-green-100">
+                Available on official app stores for Android and iOS.
             </p>
 
-            <a href="mailto:info@vivaqueue.com"
-                class="bg-white text-primary px-6 py-3 rounded-lg font-medium hover:bg-green-100 transition">
-                Contact Us
-            </a>
+            <div class="flex justify-center gap-6 flex-wrap">
+                <!-- Google Play -->
+                <a href="#" class="transition hover:scale-105">
+                    <img
+                        src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+                        alt="Get it on Google Play"
+                        class="h-14">
+                </a>
+
+                <!-- App Store -->
+                <a href="#" class="transition hover:scale-105">
+                    <img
+                        src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+                        alt="Download on the App Store"
+                        class="h-14">
+                </a>
+            </div>
         </div>
     </section>
+
 
     <!-- Footer -->
     <footer class="border-t py-6">
         <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-500">
-            © {{ date('Y') }} Viva Queue. All rights reserved.
+            © {{ date('Y') }} Salsabil App. All rights reserved.
         </div>
     </footer>
 
