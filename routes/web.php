@@ -119,6 +119,11 @@ Route::prefix('gettogether')->group(function () {
 
 // -------------------- Salsabil App ENDPoint -------------------- //
 Route::prefix('salsabil')->group(function () {
+
+    Route::get('/dashboard', function () {
+        return view('salsabil.dashboard');
+    })->name('salsabil.dashboard');
+
     Route::get('/app', function () {
         return view('salsabil.index');
     })->name('salsabil.index');
