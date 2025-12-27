@@ -115,3 +115,11 @@ Route::prefix('gettogether')->group(function () {
         return view('gettogether.index');
     })->middleware('auth')->name('gettogether.index');
 });
+
+
+// -------------------- Salsabil App ENDPoint -------------------- //
+Route::prefix('salsabil')->group(function () {
+    Route::get('/app', function () {
+        return view('salsabil.index');
+    })->name('salsabil.index');
+});
