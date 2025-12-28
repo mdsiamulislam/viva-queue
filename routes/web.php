@@ -125,6 +125,19 @@ Route::prefix('salsabil')->group(function () {
         return view('salsabil.dashboard');
     })->name('salsabil.dashboard');
 
+    // -------- Blog App Routes -------- //
+
+    Route::prefix('/blogs')->group(function () {
+
+        Route::get('/create', function () {
+            return view('salsabil.blogs.create');
+        })->name('salsabil.blogs.create');
+
+        Route::post('/store', [SalsabilBlogsController::class, 'store'])->name('salsabil.blogs.store');
+    });
+
+
+
     Route::get('/app', function () {
         return view('salsabil.index');
     })->name('salsabil.index');
