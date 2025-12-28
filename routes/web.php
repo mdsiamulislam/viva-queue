@@ -5,6 +5,7 @@ use App\Http\Controllers\FeedbackController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\JoinController;
+use App\Http\Controllers\SalsabilBlogsController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use Laravel\Socialite\Socialite;
@@ -119,7 +120,28 @@ Route::prefix('gettogether')->group(function () {
 
 // -------------------- Salsabil App ENDPoint -------------------- //
 Route::prefix('salsabil')->group(function () {
+
+    Route::get('/dashboard', function () {
+        return view('salsabil.dashboard');
+    })->name('salsabil.dashboard');
+
+    // -------- Blog App Routes -------- //
+
+    Route::prefix('/blogs')->group(function () {
+
+        Route::get('/create', function () {
+            return view('salsabil.blogs.create');
+        })->name('salsabil.blogs.create');
+
+        Route::post('/store', [SalsabilBlogsController::class, 'store'])->name('salsabil.blogs.store');
+    });
+
+
+
     Route::get('/app', function () {
         return view('salsabil.index');
     })->name('salsabil.index');
+
+    // Salsabil Blog Routes
+    Route::get('/blogs', [SalsabilBlogsController::class, 'index'])->name('salsabil.blogs.index');
 });
